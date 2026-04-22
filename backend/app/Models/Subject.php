@@ -10,7 +10,7 @@ class Subject extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'code', 'class', 'max_marks', 'teaching_staff',
+        'name', 'code', 'class', 'max_marks', 'teaching_staff', 'type', 'is_active',
     ];
 
     public function marks()

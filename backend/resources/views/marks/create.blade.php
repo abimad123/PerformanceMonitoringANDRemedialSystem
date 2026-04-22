@@ -15,10 +15,10 @@
 
       <div class="form-group">
         <label class="form-label" for="student_id">Student *</label>
-        <select name="student_id" id="student_id" class="form-select" required>
+        <select name="student_id" id="student_id" class="form-select" required onchange="filterSubjects()">
           <option value="">Select a student…</option>
           @foreach($students as $s)
-            <option value="{{ $s->id }}" {{ old('student_id') == $s->id ? 'selected' : '' }}>{{ $s->name }} — {{ $s->roll_no }} (Class {{ $s->class }})</option>
+            <option value="{{ $s->id }}" data-class="{{ $s->class }}" {{ old('student_id') == $s->id ? 'selected' : '' }}>{{ $s->name }} — {{ $s->roll_no }} (Class {{ $s->class }})</option>
           @endforeach
         </select>
         @error('student_id')<div class="form-error">{{ $message }}</div>@enderror
@@ -29,7 +29,7 @@
         <select name="subject_id" id="subject_id" class="form-select" required>
           <option value="">Select a subject…</option>
           @foreach($subjects as $sub)
-            <option value="{{ $sub->id }}" {{ old('subject_id') == $sub->id ? 'selected' : '' }}>{{ $sub->name }} ({{ $sub->code }})</option>
+            <option value="{{ $sub->id }}" data-class="{{ $sub->class }}" {{ old('subject_id') == $sub->id ? 'selected' : '' }}>{{ $sub->name }} ({{ $sub->code }})</option>
           @endforeach
         </select>
         @error('subject_id')<div class="form-error">{{ $message }}</div>@enderror
@@ -78,3 +78,46 @@
   </div>
 
 </x-app-layout>
+
+<script>
+  function filterSubjects() {
+      const studentSelect = document.getElementById('student_id');
+      const subjectSelect = document.getElementById('subject_id');
+      
+      if (!studentSelect || !subjectSelect) return;
+      
+      const selectedStudent = studentSelect.options[studentSelect.selectedIndex];
+      
+      if (!selectedStudent || !selectedStudent.value) {
+          // If no student selected, hide all subjects
+          for (let i = 1; i < subjectSelect.options.length; i++) {
+              subjectSelect.options[i].style.display = 'none';
+          }
+          return;
+      }
+
+      const studentClass = selectedStudent.getAttribute('data-class');
+
+      for (let i = 1; i < subjectSelect.options.length; i++) {
+          const option = subjectSelect.options[i];
+          const subjectClass = option.getAttribute('data-class');
+          
+          if (subjectClass === String(studentClass) || subjectClass === 'All' || !subjectClass) {
+              option.style.display = '';
+          } else {
+              option.style.display = 'none';
+          }
+      }
+
+      // Reset subject selection if current selection is hidden
+      if (subjectSelect.selectedIndex > 0) {
+          const currentOption = subjectSelect.options[subjectSelect.selectedIndex];
+          if (currentOption.style.display === 'none') {
+              subjectSelect.value = '';
+          }
+      }
+  }
+
+  // Run on load in case a student is already selected
+  document.addEventListener('DOMContentLoaded', filterSubjects);
+</script>
