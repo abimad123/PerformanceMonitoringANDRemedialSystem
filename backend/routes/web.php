@@ -1,0 +1,73 @@
+<?php
+
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MarkController;
+use App\Http\Controllers\PerformanceController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RemedialController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\StudentController;
+use Illuminate\Support\Facades\Route;
+
+// Redirect root to dashboard (or login if unauthenticated)
+Route::get('/', fn() => redirect()->route('dashboard'));
+
+// Auth routes (provided by Breeze)
+require __DIR__ . '/auth.php';
+
+use App\Http\Controllers\JoinController;
+use App\Http\Controllers\StudentProfileController;
+use App\Http\Controllers\TeacherController;
+
+// Public Invite Routes
+Route::middleware('guest')->group(function () {
+    Route::get('/join/{school_code}', [JoinController::class, 'create'])->name('join.create');
+    Route::post('/join/{school_code}', [JoinController::class, 'store'])->name('join.store')->middleware('throttle:10,1');
+});
+
+// Protected routes — require authentication
+Route::middleware('auth')->group(function () {
+    
+    // Complete Profile (for Students)
+    Route::get('/complete-profile', [StudentProfileController::class, 'create'])->name('complete-profile');
+    Route::post('/complete-profile', [StudentProfileController::class, 'store'])->name('complete-profile.store');
+
+    // Dashboard Router & Specific Endpoints
+    Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/admin', [\App\Http\Controllers\AdminDashboardController::class, 'index'])->name('dashboard.admin');
+    Route::get('/dashboard/teacher', [\App\Http\Controllers\TeacherDashboardController::class, 'index'])->name('dashboard.teacher');
+    Route::get('/dashboard/student', [\App\Http\Controllers\StudentDashboardController::class, 'index'])->name('dashboard.student');
+
+    Route::middleware(\App\Http\Middleware\EnsureProfileCompleted::class)->group(function () {
+
+        // Profile (Breeze default)
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+        // Students
+        Route::resource('students', StudentController::class);
+
+        // Marks
+        Route::resource('marks', MarkController::class)->only(['index', 'create', 'store', 'destroy']);
+
+        // Performance
+        Route::prefix('performance')->name('performance.')->group(function () {
+            Route::get('/',                     [PerformanceController::class, 'index'])       ->name('index');
+            Route::get('/student/{student}',   [PerformanceController::class, 'show'])        ->name('show');
+            Route::get('/slow-learners',       [PerformanceController::class, 'slowLearners'])->name('slow-learners');
+        });
+
+        // Remedial actions
+        Route::resource('remedial', RemedialController::class);
+
+        // Reports
+        Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+
+        // Admin Only Routes
+        Route::middleware([\App\Http\Middleware\RoleMiddleware::class.':admin'])->group(function () {
+            Route::post('/teachers', [TeacherController::class, 'store'])->name('teachers.store');
+            Route::post('/teachers/assign', [TeacherController::class, 'assign'])->name('teachers.assign');
+        });
+    });
+});
