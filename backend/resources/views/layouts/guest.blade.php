@@ -9,8 +9,6 @@
   <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
 </head>
 <body>
-<div class="auth-page">
   {{ $slot }}
-</div>
 </body>
 </html>
