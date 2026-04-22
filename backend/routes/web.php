@@ -67,8 +67,7 @@ Route::middleware('auth')->group(function () {
         // Admin Only Routes
         Route::middleware([\App\Http\Middleware\RoleMiddleware::class.':admin'])->group(function () {
             Route::resource('subjects', \App\Http\Controllers\SubjectController::class)->except(['show']);
-            Route::post('/teachers', [TeacherController::class, 'store'])->name('teachers.store');
-            Route::post('/teachers/assign', [TeacherController::class, 'assign'])->name('teachers.assign');
+            Route::resource('teachers', \App\Http\Controllers\TeacherController::class);
         });
     });
 });
