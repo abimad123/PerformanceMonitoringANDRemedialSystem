@@ -46,6 +46,18 @@ class Student extends Model
         return $this->hasMany(RemedialAction::class);
     }
 
+    public function scopeActive($query)
+    {
+        return $query->where($this->getTable() . '.is_active', true);
+    }
+
+    public function scopeOrderedByName($query)
+    {
+        return $query->select('students.*')
+            ->join('users', 'students.user_id', '=', 'users.id')
+            ->orderBy('users.name');
+    }
+
     public function getHasMarksAttribute(): bool
     {
         return $this->marks()->exists();

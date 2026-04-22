@@ -22,7 +22,7 @@ class MarkController extends Controller
         }
 
         $marks    = $query->paginate(20)->withQueryString();
-        $students = Student::orderBy('name')->get(['id', 'name', 'roll_no']);
+        $students = Student::orderedByName()->with('user')->get();
         $subjects = Subject::orderBy('name')->get(['id', 'name', 'code']);
 
         return view('marks.index', compact('marks', 'students', 'subjects'));
@@ -30,7 +30,7 @@ class MarkController extends Controller
 
     public function create()
     {
-        $students = Student::where('status', 'active')->orderBy('name')->get();
+        $students = Student::active()->orderedByName()->with('user')->get();
         $subjects = Subject::orderBy('name')->get();
         return view('marks.create', compact('students', 'subjects'));
     }

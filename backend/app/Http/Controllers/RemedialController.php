@@ -21,14 +21,14 @@ class RemedialController extends Controller
         }
 
         $actions  = $query->paginate(15)->withQueryString();
-        $students = Student::where('status', 'active')->orderBy('name')->get(['id', 'name', 'roll_no']);
+        $students = Student::active()->orderedByName()->with('user')->get();
 
         return view('remedial.index', compact('actions', 'students'));
     }
 
     public function create(Request $request)
     {
-        $students = Student::where('status', 'active')->orderBy('name')->get();
+        $students = Student::active()->orderedByName()->with('user')->get();
         $selectedStudent = $request->filled('student_id')
             ? Student::find($request->student_id)
             : null;
@@ -57,7 +57,7 @@ class RemedialController extends Controller
 
     public function edit(RemedialAction $remedial)
     {
-        $students = Student::where('status', 'active')->orderBy('name')->get();
+        $students = Student::active()->orderedByName()->with('user')->get();
         return view('remedial.edit', compact('remedial', 'students'));
     }
 
