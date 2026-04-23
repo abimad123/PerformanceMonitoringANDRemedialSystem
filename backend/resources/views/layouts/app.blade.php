@@ -17,14 +17,21 @@
   @include('layouts.sidebar')
 
   {{-- ── Main ─────────────────────────────────────── --}}
-  <div class="main-content">
+  <div class="main-content" id="main-content">
 
     {{-- Topbar --}}
     <header class="topbar">
       <div class="topbar-breadcrumb">
-        <span>PMRS</span>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-        <span class="current">{{ $title ?? 'Dashboard' }}</span>
+        <button id="sidebar-toggle" class="topbar-icon-btn" style="margin-right: 12px; border: none; background: transparent;" title="Toggle Sidebar">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <span style="font-weight: 600;">PMRS</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin: 0 4px;"><polyline points="9 18 15 12 9 6"/></svg>
+        <span class="current" style="color: var(--primary);">{{ $title ?? 'Dashboard' }}</span>
       </div>
 
       <div class="topbar-actions">
@@ -40,12 +47,6 @@
         <div class="user-avatar" style="cursor:default;" title="{{ auth()->user()->name }}">
           {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
         </div>
-
-        {{-- Logout form --}}
-        <form method="POST" action="{{ route('logout') }}">
-          @csrf
-          <button type="submit" class="btn btn-outline btn-sm">Logout</button>
-        </form>
       </div>
     </header>
 
@@ -76,7 +77,7 @@
 {{-- Chart.js & QR Code --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-{{-- Auto-dismiss flash --}}
+{{-- Auto-dismiss flash & Sidebar toggle --}}
 <script>
   setTimeout(() => {
     ['flash-success','flash-error'].forEach(id => {
@@ -84,6 +85,13 @@
       if (el) { el.style.opacity = '0'; el.style.transition = 'opacity 0.4s'; setTimeout(() => el.remove(), 400); }
     });
   }, 4000);
+
+  const toggleBtn = document.getElementById('sidebar-toggle');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('sidebar-closed');
+    });
+  }
 </script>
 @stack('scripts')
 </body>

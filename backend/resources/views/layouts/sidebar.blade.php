@@ -2,15 +2,9 @@
 
   {{-- Brand --}}
   <div class="sidebar-brand">
-    <div class="brand-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-      </svg>
-    </div>
     <div class="brand-text">
-      <h1>PMRS</h1>
-      <span>Performance Monitor</span>
-    </div>
+      <h1><img src="{{ asset('logo.png') }}" alt="Logo" style="width: 150px; height: 50px;"></h1>
+          </div>
   </div>
 
   {{-- Nav --}}
@@ -109,12 +103,24 @@
 
   {{-- Footer --}}
   <div class="sidebar-footer">
-    <div class="sidebar-user">
-      <div class="user-avatar">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</div>
-      <div class="user-info">
-        <div class="user-name">{{ auth()->user()->name }}</div>
-        <div class="user-email">{{ auth()->user()->email }}</div>
+    <div class="sidebar-user" style="display: flex; align-items: center; justify-content: space-between;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div class="user-avatar" title="{{ auth()->user()->name }}">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</div>
+        <div class="user-info" style="overflow: hidden;">
+          <div class="user-name" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px;">{{ auth()->user()->name }}</div>
+          <div class="user-email" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px;">{{ auth()->user()->email }}</div>
+        </div>
       </div>
+      <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
+        @csrf
+        <button type="submit" class="logout-icon-btn" title="Logout">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+        </button>
+      </form>
     </div>
   </div>
 
