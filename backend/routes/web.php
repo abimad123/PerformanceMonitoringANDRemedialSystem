@@ -38,6 +38,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/teacher', [\App\Http\Controllers\TeacherDashboardController::class, 'index'])->name('dashboard.teacher');
     Route::get('/dashboard/student', [\App\Http\Controllers\StudentDashboardController::class, 'index'])->name('dashboard.student');
 
+    // Global Search
+    Route::get('/search', [\App\Http\Controllers\SearchController::class, 'search'])->name('search');
+
     Route::middleware(\App\Http\Middleware\EnsureProfileCompleted::class)->group(function () {
 
         // Profile (Breeze default)
