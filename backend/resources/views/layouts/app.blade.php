@@ -9,304 +9,340 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
   <style>
-    /* ── Premium Navbar ────────────────────────────────── */
-    .pmrs-navbar {
+    /* ── Design Tokens ── */
+    :root {
+      --c-primary:    #6C5CE7;
+      --c-primary-d:  #5A4BD6;
+      --c-primary-l:  #A29BFE;
+      --c-primary-bg: rgba(108,92,231,0.08);
+      --c-success:    #22c55e;
+      --c-warning:    #f59e0b;
+      --c-danger:     #ef4444;
+      --c-info:       #3b82f6;
+      --c-neutral:    #94a3b8;
+      --c-text:       #0f172a;
+      --c-text-2:     #64748b;
+      --c-muted:      #94a3b8;
+      --c-border:     rgba(0,0,0,0.07);
+      --c-card:       #ffffff;
+      --grad-primary: linear-gradient(135deg,#6C5CE7 0%,#5A4BD6 100%);
+    }
+
+    /* ── Page ── */
+    html,body { margin:0; padding:0; }
+    body { background: linear-gradient(180deg,#f8fafc 0%,#eef2ff 100%) fixed; min-height:100vh; font-family:'Inter',sans-serif; color:var(--c-text); }
+
+    /* ── Floating Navbar outer ── */
+    .pmrs-navbar-outer {
       position: sticky;
       top: 0;
-      z-index: 100;
-      height: 68px;
+      z-index: 200;
+      padding: 10px 20px 0;
+      pointer-events: none;
+    }
+
+    /* ── Navbar ── */
+    .pmrs-navbar {
+      pointer-events: all;
+      height: 64px;
       display: flex;
       align-items: center;
-      padding: 0 28px;
-      gap: 16px;
-      background: rgba(255, 255, 255, 0.80);
+      padding: 0 20px;
+      gap: 10px;
+      background: rgba(255,255,255,0.72);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-      box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.03);
-      transition: background 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid rgba(255,255,255,0.75);
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(108,92,231,0.08), 0 1px 2px rgba(0,0,0,0.04);
+      transition: background .3s ease, box-shadow .3s ease;
     }
-
     .pmrs-navbar.scrolled {
-      background: rgba(255, 255, 255, 0.95);
-      box-shadow: 0 1px 0 rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.06);
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 8px 32px rgba(108,92,231,0.12), 0 1px 3px rgba(0,0,0,0.06);
     }
 
-    /* Logo */
-    .nb-logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      flex-shrink: 0;
-    }
-    .nb-logo img {
-      height: 36px;
-      width: auto;
-      object-fit: contain;
-    }
+    /* ── Logo ── */
+    .nb-logo { display:flex; align-items:center; gap:10px; text-decoration:none; flex-shrink:0; }
+    .nb-logo img { height:34px; width:auto; object-fit:contain; }
 
-    /* Nav Pills */
-    .nb-nav {
-      display: flex;
-      align-items: center;
-      gap: 2px;
-      margin-left: 24px;
-    }
+    /* ── Desktop Nav pills ── */
+    .nb-nav { display:flex; align-items:center; gap:2px; margin-left:12px; }
     .nb-nav a {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 7px 14px;
-      border-radius: 8px;
-      font-size: 13.5px;
-      font-weight: 500;
-      color: #64748b;
-      text-decoration: none;
-      transition: all 0.18s ease;
-      white-space: nowrap;
+      display:flex; align-items:center;
+      padding: 6px 13px;
+      border-radius: 100px;
+      font-size: 13px; font-weight:500;
+      color: var(--c-text-2);
+      text-decoration:none;
+      transition: all .2s cubic-bezier(.4,0,.2,1);
+      white-space:nowrap;
     }
-    .nb-nav a:hover {
-      color: #1e293b;
-      background: rgba(0,0,0,0.05);
-    }
+    .nb-nav a:hover { color:var(--c-text); background:rgba(0,0,0,0.05); transform:translateY(-1px); }
     .nb-nav a.active {
-      color: var(--primary);
-      background: rgba(108, 92, 231, 0.09);
-      font-weight: 600;
+      color:#fff;
+      background: var(--grad-primary);
+      font-weight:600;
+      box-shadow: 0 4px 12px rgba(108,92,231,0.35);
     }
+    .nb-nav a.active:hover { opacity:.9; transform:translateY(-1px); }
 
-    /* Spacer */
-    .nb-spacer { flex: 1; }
+    /* ── Spacer ── */
+    .nb-spacer { flex:1; }
 
-    /* Search */
-    .nb-search-wrap {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-    .nb-search-icon {
-      position: absolute;
-      left: 12px;
-      color: #94a3b8;
-      pointer-events: none;
-      display: flex;
-    }
+    /* ── Search ── */
+    .nb-search-wrap { position:relative; display:flex; align-items:center; }
+    .nb-search-icon { position:absolute; left:12px; color:var(--c-muted); pointer-events:none; display:flex; }
     .nb-search-input {
-      width: 220px;
-      padding: 8px 80px 8px 36px;
-      border-radius: 10px;
-      border: 1px solid rgba(0,0,0,0.09);
-      background: rgba(0,0,0,0.03);
-      font-size: 13.5px;
-      font-family: 'Inter', sans-serif;
-      color: #1e293b;
-      outline: none;
-      transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+      width: 190px;
+      padding: 8px 72px 8px 36px;
+      border-radius: 100px;
+      border: 1.5px solid var(--c-border);
+      background: rgba(248,250,252,0.9);
+      font-size:13px; font-family:'Inter',sans-serif; color:var(--c-text);
+      outline:none;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.04);
+      transition: all .25s cubic-bezier(.4,0,.2,1);
     }
-    .nb-search-input::placeholder { color: #94a3b8; }
+    .nb-search-input::placeholder { color:var(--c-muted); }
     .nb-search-input:focus {
-      width: 280px;
-      border-color: var(--primary);
-      background: #fff;
-      box-shadow: 0 0 0 3px rgba(108,92,231,0.10);
+      width:250px;
+      border-color:var(--c-primary);
+      background:#fff;
+      box-shadow: 0 0 0 3px rgba(108,92,231,0.13), inset 0 1px 3px rgba(0,0,0,0.04);
     }
-    .nb-search-kbd {
-      position: absolute;
-      right: 10px;
-      display: flex;
-      align-items: center;
-      gap: 3px;
-      pointer-events: none;
-    }
+    .nb-search-kbd { position:absolute; right:10px; display:flex; align-items:center; gap:3px; pointer-events:none; }
     .nb-search-kbd kbd {
-      background: #f1f5f9;
-      color: #94a3b8;
-      padding: 1px 5px;
-      border-radius: 5px;
-      font-family: monospace;
-      font-size: 10px;
-      font-weight: 700;
-      border: 1px solid #e2e8f0;
+      background:#f1f5f9; color:var(--c-muted);
+      padding:1px 5px; border-radius:5px;
+      font-family:monospace; font-size:10px; font-weight:700;
+      border:1px solid #e2e8f0;
     }
 
-    /* Search Dropdown */
+    /* ── Search Dropdown ── */
     .nb-search-dropdown {
-      display: none;
-      position: absolute;
-      top: calc(100% + 10px);
-      left: 0;
-      right: 0;
-      background: rgba(255,255,255,0.98);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(0,0,0,0.07);
-      border-radius: 14px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.10);
-      overflow: hidden;
-      z-index: 200;
-      animation: nbDropIn 0.18s ease;
+      display:none; position:absolute;
+      top:calc(100% + 10px); left:0; right:0; min-width:280px;
+      background:rgba(255,255,255,0.98);
+      backdrop-filter:blur(12px);
+      border:1px solid var(--c-border);
+      border-radius:14px;
+      box-shadow:0 12px 40px rgba(0,0,0,0.10);
+      overflow:hidden; z-index:300;
+      animation:nbDropIn .18s ease;
     }
 
-    /* Divider */
-    .nb-divider {
-      width: 1px;
-      height: 28px;
-      background: rgba(0,0,0,0.08);
-      flex-shrink: 0;
-    }
+    /* ── Divider ── */
+    .nb-divider { width:1px; height:26px; background:rgba(0,0,0,0.08); flex-shrink:0; }
 
-    /* Bell */
-    .nb-bell {
-      position: relative;
-      width: 38px;
-      height: 38px;
-      border: none;
-      background: transparent;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #64748b;
-      cursor: pointer;
-      transition: all 0.18s ease;
-      flex-shrink: 0;
-    }
-    .nb-bell:hover {
-      background: rgba(0,0,0,0.05);
-      color: #1e293b;
-    }
-    .nb-bell .nb-badge {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      width: 8px;
-      height: 8px;
-      background: #ef4444;
-      border-radius: 50%;
-      border: 2px solid #fff;
-    }
+  
 
-    /* Profile */
+    /* ── Profile pill ── */
     .nb-profile {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-      padding: 5px 10px 5px 5px;
-      border-radius: 12px;
-      transition: background 0.18s ease;
-      flex-shrink: 0;
+      position:relative; display:flex; align-items:center; gap:9px; cursor:pointer;
+      padding:4px 12px 4px 4px;
+      border-radius:100px;
+      border:1px solid var(--c-border);
+      background:rgba(0,0,0,0.02);
+      transition:all .2s cubic-bezier(.4,0,.2,1); flex-shrink:0;
     }
-    .nb-profile:hover { background: rgba(0,0,0,0.04); }
-
+    .nb-profile:hover { background:var(--c-primary-bg); border-color:rgba(108,92,231,0.18); }
     .nb-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      background: var(--gradient-primary);
-      color: #fff;
-      font-weight: 700;
-      font-size: 13px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      box-shadow: 0 2px 8px rgba(108,92,231,0.25);
-      transition: transform 0.18s ease;
+      width:34px; height:34px; border-radius:50%;
+      background: #ffff00ff; 
+      color: #000000ff;
+      font-weight:700; font-size:13px;
+      display:flex; align-items:center; justify-content:center; flex-shrink:0;
+      box-shadow:0 2px 8px rgba(108,92,231,0.30);
+      transition:transform .2s cubic-bezier(.4,0,.2,1), box-shadow .2s ease;
     }
-    .nb-profile:hover .nb-avatar { transform: scale(1.06); }
+    .nb-profile:hover .nb-avatar { transform:scale(1.08); box-shadow:0 4px 14px rgba(108,92,231,0.4); }
+    .nb-user-text { display:flex; flex-direction:column; }
+    .nb-user-name { font-size:13px; font-weight:600; color:var(--c-text); line-height:1.3; }
+    .nb-user-role { font-size:11px; color:var(--c-muted); line-height:1.3; }
+    .nb-chevron { color:var(--c-muted); transition:transform .2s ease; flex-shrink:0; }
+    .nb-profile.open .nb-chevron { transform:rotate(180deg); }
 
-    .nb-user-text { display: flex; flex-direction: column; }
-    .nb-user-name { font-size: 13px; font-weight: 600; color: #1e293b; line-height: 1.3; }
-    .nb-user-role { font-size: 11px; color: #94a3b8; line-height: 1.3; }
-
-    .nb-chevron {
-      color: #94a3b8;
-      transition: transform 0.2s ease;
-    }
-    .nb-profile.open .nb-chevron { transform: rotate(180deg); }
-
-    /* Profile Dropdown */
+    /* ── Profile Dropdown ── */
     .nb-profile-dropdown {
-      display: none;
-      position: absolute;
-      top: calc(100% + 10px);
-      right: 0;
-      width: 230px;
-      background: rgba(255,255,255,0.98);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(0,0,0,0.07);
-      border-radius: 14px;
-      box-shadow: 0 16px 48px rgba(0,0,0,0.12);
-      overflow: hidden;
-      z-index: 200;
-      animation: nbDropIn 0.18s ease;
+      display:none; position:absolute;
+      top:calc(100% + 10px); right:0; width:236px;
+      background:rgba(255,255,255,0.98);
+      backdrop-filter:blur(16px);
+      border:1px solid var(--c-border);
+      border-radius:14px;
+      box-shadow:0 16px 48px rgba(0,0,0,0.13);
+      overflow:hidden; z-index:300;
+      animation:nbDropIn .18s ease;
     }
-    .nb-profile-dropdown.open { display: block; }
-
-    .nb-dropdown-header {
-      padding: 14px 16px;
-      border-bottom: 1px solid rgba(0,0,0,0.06);
-    }
-    .nb-dropdown-header .full-name { font-weight: 600; color: #1e293b; font-size: 14px; }
-    .nb-dropdown-header .email { font-size: 12px; color: #94a3b8; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
-    .nb-dropdown-items { padding: 6px; }
+    .nb-profile-dropdown.open { display:block; }
+    .nb-dropdown-header { padding:14px 16px; border-bottom:1px solid rgba(0,0,0,0.06); }
+    .nb-dropdown-header .full-name { font-weight:600; color:var(--c-text); font-size:14px; }
+    .nb-dropdown-header .email { font-size:12px; color:var(--c-muted); margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .nb-dropdown-items { padding:6px; }
     .nb-dropdown-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 9px 12px;
-      border-radius: 8px;
-      font-size: 13.5px;
-      color: #475569;
-      cursor: pointer;
-      transition: all 0.15s ease;
-      text-decoration: none;
-      border: none;
-      background: transparent;
-      width: 100%;
-      text-align: left;
+      display:flex; align-items:center; gap:10px;
+      padding:9px 12px; border-radius:8px;
+      font-size:13px; color:var(--c-text-2); cursor:pointer;
+      transition:all .15s ease; text-decoration:none;
+      border:none; background:transparent; width:100%; text-align:left;
     }
-    .nb-dropdown-item:hover { background: rgba(0,0,0,0.04); color: #1e293b; }
-    .nb-dropdown-item.danger { color: #ef4444; }
-    .nb-dropdown-item.danger:hover { background: rgba(239,68,68,0.07); color: #dc2626; }
+    .nb-dropdown-item:hover { background:rgba(0,0,0,0.04); color:var(--c-text); }
+  
+    .nb-dropdown-item.danger {
+  color: #ffffffff;
+  background-color: #ff0000ff;
+  font-weight: 600;
+}
+
+.nb-dropdown-item.danger:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(249, 0, 0, 1),
+    rgba(84, 11, 11, 1)
+  );
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+}
 
     @keyframes nbDropIn {
-      from { opacity: 0; transform: translateY(-6px) scale(0.98); }
-      to   { opacity: 1; transform: translateY(0) scale(1); }
+      from { opacity:0; transform:translateY(-6px) scale(0.98); }
+      to   { opacity:1; transform:translateY(0) scale(1); }
     }
 
-    /* Search result items */
+    /* ── Search result items ── */
     .nb-result-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 11px 16px;
-      color: #1e293b;
-      text-decoration: none;
-      transition: background 0.15s;
-      border-bottom: 1px solid rgba(0,0,0,0.04);
+      display:flex; align-items:center; gap:12px;
+      padding:11px 16px; color:var(--c-text); text-decoration:none;
+      transition:background .15s; border-bottom:1px solid rgba(0,0,0,0.04);
     }
-    .nb-result-item:last-child { border-bottom: none; }
-    .nb-result-item:hover { background: var(--primary-light); }
-    .nb-result-icon {
-      width: 32px; height: 32px; border-radius: 8px;
-      background: #f8fafc; display: flex; align-items: center;
-      justify-content: center; color: var(--primary); flex-shrink: 0;
+    .nb-result-item:last-child { border-bottom:none; }
+    .nb-result-item:hover { background:rgba(108,92,231,0.06); }
+    .nb-result-icon { width:32px; height:32px; border-radius:8px; background:#f8fafc; display:flex; align-items:center; justify-content:center; color:var(--c-primary); flex-shrink:0; }
+    .nb-result-title { font-size:14px; font-weight:600; }
+    .nb-result-sub { font-size:12px; color:var(--c-muted); margin-top:1px; }
+    .nb-result-msg { padding:14px 16px; font-size:13px; color:var(--c-muted); text-align:center; }
+
+    /* ── Hamburger (mobile only) ── */
+    .nb-hamburger {
+      display:none;
+      width:36px; height:36px;
+      border:1px solid var(--c-border);
+      background:rgba(0,0,0,0.02);
+      border-radius:10px;
+      flex-direction:column; align-items:center; justify-content:center; gap:5px;
+      cursor:pointer; flex-shrink:0;
+      transition:all .2s ease;
     }
-    .nb-result-title { font-size: 14px; font-weight: 600; }
-    .nb-result-sub { font-size: 12px; color: #94a3b8; margin-top: 1px; }
-    .nb-result-msg { padding: 14px 16px; font-size: 13px; color: #94a3b8; text-align: center; }
+    .nb-hamburger span { display:block; width:18px; height:1.5px; background:var(--c-text-2); border-radius:2px; transition:all .25s ease; }
+    .nb-hamburger.open span:nth-child(1) { transform:translateY(6.5px) rotate(45deg); }
+    .nb-hamburger.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
+    .nb-hamburger.open span:nth-child(3) { transform:translateY(-6.5px) rotate(-45deg); }
+
+    /* ── Mobile Drawer ── */
+    .nb-drawer-overlay {
+      display:none; position:fixed; inset:0;
+      background:rgba(0,0,0,0.35); backdrop-filter:blur(2px);
+      z-index:299;
+      animation:fadeIn .2s ease;
+    }
+    .nb-drawer-overlay.open { display:block; }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+    .nb-drawer {
+      position:fixed; top:0; left:0; bottom:0; width:270px;
+      background:#fff;
+      box-shadow:6px 0 32px rgba(0,0,0,0.12);
+      z-index:300; display:flex; flex-direction:column;
+      transform:translateX(-100%);
+      transition:transform .3s cubic-bezier(.4,0,.2,1);
+    }
+    .nb-drawer.open { transform:translateX(0); }
+    .nb-drawer-header {
+      padding:20px 20px 16px;
+      border-bottom:1px solid var(--c-border);
+      display:flex; align-items:center; gap:10px;
+    }
+    .nb-drawer-nav { padding:12px 10px; display:flex; flex-direction:column; gap:2px; flex:1; overflow-y:auto; }
+    .nb-drawer-nav a {
+      display:flex; align-items:center; gap:10px;
+      padding:10px 14px; border-radius:10px;
+      font-size:14px; font-weight:500;
+      color:var(--c-text-2); text-decoration:none;
+      transition:all .18s ease;
+    }
+    .nb-drawer-nav a:hover { background:rgba(0,0,0,0.05); color:var(--c-text); }
+    .nb-drawer-nav a.active { background:var(--c-primary-bg); color:var(--c-primary); font-weight:600; }
+    .nb-drawer-footer { padding:16px 20px; border-top:1px solid var(--c-border); }
+
+    /* ── Mobile search toggle ── */
+    .nb-search-toggle {
+      display:none;
+      width:36px; height:36px;
+      border:1px solid var(--c-border);
+      background:rgba(0,0,0,0.02);
+      border-radius:50%;
+      align-items:center; justify-content:center;
+      cursor:pointer; color:var(--c-text-2);
+      transition:all .2s ease; flex-shrink:0;
+    }
+    .nb-search-toggle:hover { background:var(--c-primary-bg); color:var(--c-primary); }
+
+    /* ── Responsive Breakpoints ── */
+    @media (max-width: 1024px) {
+      .nb-nav { margin-left:8px; }
+      .nb-nav a { padding:5px 10px; font-size:12.5px; }
+      .nb-search-input { width:150px; }
+      .nb-search-input:focus { width:200px; }
+      .nb-user-text { display:none; }
+      .nb-chevron { display:none; }
+    }
+
+    @media (max-width: 768px) {
+      .pmrs-navbar-outer { padding:8px 12px 0; }
+      .pmrs-navbar { height:56px; padding:0 14px; border-radius:12px; }
+      .nb-nav { display:none; }
+      .nb-divider { display:none; }
+      .nb-search-wrap { display:none; }
+      .nb-search-kbd { display:none; }
+      .nb-hamburger { display:flex; }
+      .nb-search-toggle { display:flex; }
+      .nb-profile { padding:4px; border:none; background:transparent; }
+      .nb-profile:hover { background:transparent; }
+    }
+
+    @media (max-width: 480px) {
+      .pmrs-navbar-outer { padding:6px 8px 0; }
+      .pmrs-navbar { height:52px; padding:0 10px; border-radius:10px; }
+    }
+
+    /* ── Mobile search bar expansion ── */
+    .nb-search-mobile-wrap {
+      display:none; position:fixed;
+      top:80px; left:12px; right:12px;
+      z-index:250;
+      animation:nbDropIn .2s ease;
+    }
+    .nb-search-mobile-wrap.open { display:block; }
+    .nb-search-mobile-input {
+      width:100%; padding:12px 20px 12px 44px;
+      border-radius:100px;
+      border:1.5px solid var(--c-primary);
+      background:#fff;
+      font-size:14px; font-family:'Inter',sans-serif; color:var(--c-text);
+      outline:none;
+      box-shadow:0 0 0 3px rgba(108,92,231,0.12), 0 8px 24px rgba(0,0,0,0.08);
+    }
+    .nb-search-mobile-icon { position:absolute; left:16px; top:50%; transform:translateY(-50%); color:var(--c-primary); pointer-events:none; display:flex; }
   </style>
   @stack('styles')
+
 </head>
 <body>
 <div class="app-layout">
   <div class="main-content" id="main-content">
 
-    {{-- ── Premium Navbar ── --}}
+    {{-- ── Floating Navbar ── --}}
+    <div class="pmrs-navbar-outer" id="pmrs-navbar-outer">
     <header class="pmrs-navbar" id="pmrs-navbar">
 
       {{-- LEFT: Logo --}}
@@ -332,9 +368,16 @@
           <a href="{{ route('performance.index') }}" class="{{ request()->routeIs('performance.*') ? 'active' : '' }}">Performance</a>
         @elseif(auth()->user()->isStudent())
           <a href="{{ route('dashboard.student') }}" class="{{ request()->routeIs('dashboard.*') ? 'active' : '' }}">Dashboard</a>
-          <a href="#" class="">My Progress</a>
+          <a href="{{ route('student.progress') }}" class="{{ request()->routeIs('student.progress') ? 'active' : '' }}">My Progress</a>
         @endif
       </nav>
+      @endauth
+
+      {{-- Mobile: Hamburger (hidden on desktop) --}}
+      @auth
+      <button class="nb-hamburger" id="nb-hamburger" onclick="toggleDrawer()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
       @endauth
 
       <div class="nb-spacer"></div>
@@ -358,11 +401,7 @@
 
       <div class="nb-divider"></div>
 
-      {{-- Bell --}}
-      <button class="nb-bell" id="topbar-notifications" title="Notifications">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-        <span class="nb-badge"></span>
-      </button>
+      
 
       <div class="nb-divider"></div>
 
@@ -394,9 +433,70 @@
       </div>
       @endauth
     </header>
+    </div>{{-- end .pmrs-navbar-outer --}}
+
+    {{-- Mobile Search Bar --}}
+    @auth
+    <div class="nb-search-mobile-wrap" id="nb-search-mobile-wrap">
+      <span class="nb-search-mobile-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <input type="text" class="nb-search-mobile-input" placeholder="Search students, teachers..." id="mobile-search-input" autocomplete="off">
+    </div>
+    @endauth
+
+    {{-- Mobile Drawer Overlay --}}
+    @auth
+    <div class="nb-drawer-overlay" id="nb-drawer-overlay" onclick="closeDrawer()"></div>
+    <aside class="nb-drawer" id="nb-drawer">
+      <div class="nb-drawer-header">
+        <img src="{{ asset('logo.png') }}" alt="PMRS" style="height:30px; object-fit:contain;">
+      </div>
+      <nav class="nb-drawer-nav">
+        @if(auth()->user()->isAdmin())
+          <a href="{{ route('dashboard.admin') }}" class="{{ request()->routeIs('dashboard.*') ? 'active' : '' }}" onclick="closeDrawer()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            Dashboard
+          </a>
+          <a href="{{ route('students.index') }}" class="{{ request()->routeIs('students.*') ? 'active' : '' }}" onclick="closeDrawer()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            Students
+          </a>
+          <a href="{{ route('subjects.index') }}" class="{{ request()->routeIs('subjects.*') ? 'active' : '' }}" onclick="closeDrawer()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            Subjects
+          </a>
+          <a href="{{ route('teachers.index') }}" class="{{ request()->routeIs('teachers.*') ? 'active' : '' }}" onclick="closeDrawer()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            Teachers
+          </a>
+          <a href="{{ route('reports.index') }}" class="{{ request()->routeIs('reports.*') ? 'active' : '' }}" onclick="closeDrawer()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Reports
+          </a>
+        @elseif(auth()->user()->isTeacher())
+          <a href="{{ route('dashboard.teacher') }}" class="{{ request()->routeIs('dashboard.*') ? 'active' : '' }}" onclick="closeDrawer()">Dashboard</a>
+          <a href="{{ route('students.index') }}" class="{{ request()->routeIs('students.*') ? 'active' : '' }}" onclick="closeDrawer()">My Students</a>
+          <a href="{{ route('performance.index') }}" class="{{ request()->routeIs('performance.*') ? 'active' : '' }}" onclick="closeDrawer()">Performance</a>
+        @elseif(auth()->user()->isStudent())
+          <a href="{{ route('dashboard.student') }}" class="{{ request()->routeIs('dashboard.*') ? 'active' : '' }}" onclick="closeDrawer()">Dashboard</a>
+          <a href="#" onclick="closeDrawer()">My Progress</a>
+        @endif
+      </nav>
+      <div class="nb-drawer-footer">
+        <form method="POST" action="{{ route('logout') }}" style="margin:0;">
+          @csrf
+          <button type="submit" class="nb-dropdown-item danger" style="width:100%;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Sign Out
+          </button>
+        </form>
+      </div>
+    </aside>
+    @endauth
 
     {{-- Flash messages --}}
-    <div style="padding: 0 32px; margin-top: 16px;">
+    <div style="padding: 0 32px; margin-top: 20px;">
       @if(session('success'))
         <div class="alert alert-success" id="flash-success">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
@@ -434,8 +534,39 @@
   // ── Navbar scroll blur ──
   const navbar = document.getElementById('pmrs-navbar');
   window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 8);
+    if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 8);
   }, { passive: true });
+
+  // ── Mobile Drawer ──
+  function toggleDrawer() {
+    const drawer = document.getElementById('nb-drawer');
+    const overlay = document.getElementById('nb-drawer-overlay');
+    const btn = document.getElementById('nb-hamburger');
+    if (!drawer) return;
+    const open = drawer.classList.toggle('open');
+    overlay.classList.toggle('open', open);
+    btn.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  function closeDrawer() {
+    const drawer = document.getElementById('nb-drawer');
+    const overlay = document.getElementById('nb-drawer-overlay');
+    const btn = document.getElementById('nb-hamburger');
+    if (!drawer) return;
+    drawer.classList.remove('open');
+    overlay.classList.remove('open');
+    if (btn) btn.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ── Mobile Search ──
+  function toggleMobileSearch() {
+    const wrap = document.getElementById('nb-search-mobile-wrap');
+    if (!wrap) return;
+    const open = wrap.classList.toggle('open');
+    if (open) { const inp = document.getElementById('mobile-search-input'); if (inp) inp.focus(); }
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeDrawer(); const wrap = document.getElementById('nb-search-mobile-wrap'); if (wrap) wrap.classList.remove('open'); } });
 
   // ── Profile dropdown ──
   function toggleProfileMenu(el) {

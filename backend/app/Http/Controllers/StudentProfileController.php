@@ -22,14 +22,17 @@ class StudentProfileController extends Controller
 
         $user = auth()->user();
 
-        $user->studentProfile()->create([
-            'school_id' => $user->school_id,
-            'class' => $request->class,
-            'section' => $request->section,
-            'roll_no' => $request->roll_number,
-            'phone' => $request->phone,
-            'is_active' => true,
-        ]);
+        $user->studentProfile()->updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'school_id' => $user->school_id,
+                'class' => $request->class,
+                'section' => $request->section,
+                'roll_no' => $request->roll_number,
+                'phone' => $request->phone,
+                'is_active' => true,
+            ]
+        );
 
         $user->update(['profile_completed' => true]);
 
