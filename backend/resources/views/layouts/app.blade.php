@@ -418,14 +418,21 @@
           <a href="{{ route('students.index') }}" class="{{ request()->routeIs('students.*') ? 'active' : '' }}">Students</a>
           <a href="{{ route('subjects.index') }}" class="{{ request()->routeIs('subjects.*') ? 'active' : '' }}">Subjects</a>
           <a href="{{ route('teachers.index') }}" class="{{ request()->routeIs('teachers.*') ? 'active' : '' }}">Teachers</a>
+          <a href="{{ route('classes.index') }}" class="{{ request()->routeIs('classes.*') ? 'active' : '' }}">Classes</a>
+          <a href="{{ route('classrooms.index') }}" class="{{ request()->routeIs('classrooms.*') ? 'active' : '' }}">Rooms</a>
+          <a href="{{ route('teacher-allocations.index') }}" class="{{ request()->routeIs('teacher-allocations.*') ? 'active' : '' }}">Allocations</a>
+          <a href="{{ route('timetables.index') }}" class="{{ request()->routeIs('timetables.*') ? 'active' : '' }}">Timetable</a>
+          <a href="{{ route('admin.attendance-analytics') }}" class="{{ request()->routeIs('admin.attendance-analytics') ? 'active' : '' }}">Attendance</a>
           <a href="{{ route('reports.index') }}" class="{{ request()->routeIs('reports.*') ? 'active' : '' }}">Reports</a>
         @elseif(auth()->user()->isTeacher())
           <a href="{{ route('dashboard.teacher') }}" class="{{ request()->routeIs('dashboard.*') ? 'active' : '' }}">Dashboard</a>
+          <a href="{{ route('attendance.index') }}" class="{{ request()->routeIs('attendance.*') ? 'active' : '' }}">Mark Attendance</a>
           <a href="{{ route('students.index') }}" class="{{ request()->routeIs('students.*') ? 'active' : '' }}">My Students</a>
           <a href="{{ route('performance.index') }}" class="{{ request()->routeIs('performance.*') ? 'active' : '' }}">Performance</a>
           <a href="{{ route('quizzes.index') }}" class="{{ request()->routeIs('quizzes.*') ? 'active' : '' }}">Quizzes</a>
         @elseif(auth()->user()->isStudent())
           <a href="{{ route('dashboard.student') }}" class="{{ request()->routeIs('dashboard.*') ? 'active' : '' }}">Dashboard</a>
+          <a href="{{ route('student.attendance') }}" class="{{ request()->routeIs('student.attendance') ? 'active' : '' }}">My Attendance</a>
           <a href="{{ route('student.progress') }}" class="{{ request()->routeIs('student.progress') ? 'active' : '' }}">My Progress</a>
           <a href="{{ route('student.tasks') }}" class="{{ request()->routeIs('student.tasks') ? 'active' : '' }}">My Tasks</a>
         @endif
@@ -518,33 +525,25 @@
       </div>
       <nav class="nb-drawer-nav">
         @if(auth()->user()->isAdmin())
-          <a href="{{ route('dashboard.admin') }}" class="{{ request()->routeIs('dashboard.*') ? 'active' : '' }}" onclick="closeDrawer()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-            Dashboard
-          </a>
-          <a href="{{ route('students.index') }}" class="{{ request()->routeIs('students.*') ? 'active' : '' }}" onclick="closeDrawer()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-            Students
-          </a>
-          <a href="{{ route('subjects.index') }}" class="{{ request()->routeIs('subjects.*') ? 'active' : '' }}" onclick="closeDrawer()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-            Subjects
-          </a>
-          <a href="{{ route('teachers.index') }}" class="{{ request()->routeIs('teachers.*') ? 'active' : '' }}" onclick="closeDrawer()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-            Teachers
-          </a>
-          <a href="{{ route('reports.index') }}" class="{{ request()->routeIs('reports.*') ? 'active' : '' }}" onclick="closeDrawer()">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-            Reports
-          </a>
+          <a href="{{ route('dashboard.admin') }}" class="{{ request()->routeIs('dashboard.*') ? 'active' : '' }}" onclick="closeDrawer()">Dashboard</a>
+          <a href="{{ route('students.index') }}" class="{{ request()->routeIs('students.*') ? 'active' : '' }}" onclick="closeDrawer()">Students</a>
+          <a href="{{ route('subjects.index') }}" class="{{ request()->routeIs('subjects.*') ? 'active' : '' }}" onclick="closeDrawer()">Subjects</a>
+          <a href="{{ route('teachers.index') }}" class="{{ request()->routeIs('teachers.*') ? 'active' : '' }}" onclick="closeDrawer()">Teachers</a>
+          <a href="{{ route('classes.index') }}" class="{{ request()->routeIs('classes.*') ? 'active' : '' }}" onclick="closeDrawer()">Classes</a>
+          <a href="{{ route('classrooms.index') }}" class="{{ request()->routeIs('classrooms.*') ? 'active' : '' }}" onclick="closeDrawer()">Rooms</a>
+          <a href="{{ route('teacher-allocations.index') }}" class="{{ request()->routeIs('teacher-allocations.*') ? 'active' : '' }}" onclick="closeDrawer()">Allocations</a>
+          <a href="{{ route('timetables.index') }}" class="{{ request()->routeIs('timetables.*') ? 'active' : '' }}" onclick="closeDrawer()">Timetable</a>
+          <a href="{{ route('admin.attendance-analytics') }}" class="{{ request()->routeIs('admin.attendance-analytics') ? 'active' : '' }}" onclick="closeDrawer()">Attendance</a>
+          <a href="{{ route('reports.index') }}" class="{{ request()->routeIs('reports.*') ? 'active' : '' }}" onclick="closeDrawer()">Reports</a>
         @elseif(auth()->user()->isTeacher())
           <a href="{{ route('dashboard.teacher') }}" class="{{ request()->routeIs('dashboard.*') ? 'active' : '' }}" onclick="closeDrawer()">Dashboard</a>
+          <a href="{{ route('attendance.index') }}" class="{{ request()->routeIs('attendance.*') ? 'active' : '' }}" onclick="closeDrawer()">Mark Attendance</a>
           <a href="{{ route('students.index') }}" class="{{ request()->routeIs('students.*') ? 'active' : '' }}" onclick="closeDrawer()">My Students</a>
           <a href="{{ route('performance.index') }}" class="{{ request()->routeIs('performance.*') ? 'active' : '' }}" onclick="closeDrawer()">Performance</a>
           <a href="{{ route('quizzes.index') }}" class="{{ request()->routeIs('quizzes.*') ? 'active' : '' }}" onclick="closeDrawer()">Quizzes</a>
         @elseif(auth()->user()->isStudent())
           <a href="{{ route('dashboard.student') }}" class="{{ request()->routeIs('dashboard.*') ? 'active' : '' }}" onclick="closeDrawer()">Dashboard</a>
+          <a href="{{ route('student.attendance') }}" class="{{ request()->routeIs('student.attendance') ? 'active' : '' }}" onclick="closeDrawer()">My Attendance</a>
           <a href="{{ route('student.progress') }}" class="{{ request()->routeIs('student.progress') ? 'active' : '' }}" onclick="closeDrawer()">My Progress</a>
           <a href="{{ route('student.tasks') }}" class="{{ request()->routeIs('student.tasks') ? 'active' : '' }}" onclick="closeDrawer()">My Tasks</a>
         @endif

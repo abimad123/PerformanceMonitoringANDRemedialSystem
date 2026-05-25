@@ -107,10 +107,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Reports
         Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
+        // Teacher Attendance Routes
+        Route::get('/attendance', [\App\Http\Controllers\Teacher\AttendanceController::class, 'index'])->name('attendance.index');
+        Route::get('/attendance/mark/{timetable}', [\App\Http\Controllers\Teacher\AttendanceController::class, 'mark'])->name('attendance.mark');
+        Route::post('/attendance/store/{timetable}', [\App\Http\Controllers\Teacher\AttendanceController::class, 'store'])->name('attendance.store');
+
+        // Student Attendance Routes
+        Route::get('/my-attendance', [\App\Http\Controllers\Student\StudentAttendanceController::class, 'index'])->name('student.attendance');
+
         // Admin Only Routes
         Route::middleware([\App\Http\Middleware\RoleMiddleware::class.':admin'])->group(function () {
             Route::resource('subjects', \App\Http\Controllers\Academic\SubjectController::class)->except(['show']);
             Route::resource('teachers', TeacherController::class);
+            Route::resource('classes', \App\Http\Controllers\Admin\AcademicClassController::class)->except(['show', 'create', 'edit']);
+            Route::resource('classrooms', \App\Http\Controllers\Admin\ClassroomController::class)->except(['show', 'create', 'edit']);
+            Route::resource('teacher-allocations', \App\Http\Controllers\Admin\TeacherAllocationController::class)->only(['index', 'store', 'destroy']);
+            Route::resource('timetables', \App\Http\Controllers\Admin\TimetableController::class)->only(['index', 'store', 'destroy']);
+            Route::get('/analytics/attendance', [\App\Http\Controllers\Admin\AdminAttendanceAnalyticsController::class, 'index'])->name('admin.attendance-analytics');
         });
 
         // Quiz Management (Teachers + Admin)
