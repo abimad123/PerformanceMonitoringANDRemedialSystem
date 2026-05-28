@@ -138,6 +138,29 @@
                 <div class="pkpi-lbl">Classes Assigned</div>
             </div>
         </div>
+        <a href="{{ route('attendance.index') }}" class="premium-kpi" style="--kpi-color: #f59e0b; --kpi-bg: rgba(245,158,11,0.1); cursor: pointer; text-decoration: none; display: flex; align-items: center; gap: 24px;">
+            <div class="pkpi-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+            </div>
+            <div>
+                <div class="pkpi-val">
+                    @if($todayClassesCount > 0)
+                        {{ $todayMarkedCount }}/{{ $todayClassesCount }}
+                    @else
+                        Mark
+                    @endif
+                </div>
+                <div class="pkpi-lbl">
+                    @if($todayClassesCount > 0 && $todayMarkedCount === $todayClassesCount)
+                        All Classes Marked ✓
+                    @elseif($todayClassesCount > 0)
+                        Mark Attendance
+                    @else
+                        Go to Attendance
+                    @endif
+                </div>
+            </div>
+        </a>
     </div>
 
     {{-- Data Grids --}}

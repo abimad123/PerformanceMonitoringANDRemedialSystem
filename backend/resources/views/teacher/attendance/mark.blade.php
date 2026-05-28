@@ -111,11 +111,13 @@
         z-index: 1000;
         opacity: 0;
         pointer-events: none;
-        transition: opacity 0.3s ease;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
     }
-    .modal-overlay.show {
+    .modal-overlay.active {
         opacity: 1;
         pointer-events: auto;
+        visibility: visible !important;
     }
     .modal-container {
         background: #fff;
@@ -126,8 +128,21 @@
         transform: scale(0.9);
         transition: transform 0.3s ease;
     }
-    .modal-overlay.show .modal-container {
+    .modal-overlay.active .modal-container {
         transform: scale(1);
+    }
+    .modal-input {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 15px;
+        outline: none;
+        transition: border-color 0.2s;
+        margin-top: 8px;
+    }
+    .modal-input:focus {
+        border-color: #6C5CE7;
     }
     .modal-title {
         font-size: 20px;
@@ -345,11 +360,11 @@
         document.getElementById('physical-headcount-input').value = '';
         document.getElementById('mismatch-warning').style.display = 'none';
         document.getElementById('confirm-save-btn').disabled = true;
-        document.getElementById('headcount-modal').classList.add('show');
+        document.getElementById('headcount-modal').classList.add('active');
     }
 
     function closeHeadcountModal() {
-        document.getElementById('headcount-modal').classList.remove('show');
+        document.getElementById('headcount-modal').classList.remove('active');
     }
 
     function validateHeadcount() {
