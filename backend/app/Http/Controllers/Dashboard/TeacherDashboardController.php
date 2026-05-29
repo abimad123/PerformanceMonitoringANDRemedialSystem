@@ -28,10 +28,7 @@
  *   - Model:  App\Models\TeacherAssignment
  *   - Routes: routes/web.php → 'dashboard.teacher'
  * ============================================================================
- * 
- * 
- * 
- * 
+
  * 
  */
 namespace App\Http\Controllers\Dashboard;
