@@ -63,15 +63,20 @@ class StudentAttendanceController extends Controller
             ->get();
 
         // Calculate Monthly Trends (Presence percentage for the last 5 months)
+        $isPgsql = DB::getDriverName() === 'pgsql';
+        $monthExpr = $isPgsql 
+            ? "to_char(attendance_sessions.date, 'FMMonth YYYY')"
+            : "DATE_FORMAT(attendance_sessions.date, '%M %Y')";
+
         $monthlyTrends = DB::table('attendance_records')
             ->join('attendance_sessions', 'attendance_records.attendance_session_id', '=', 'attendance_sessions.id')
             ->select(
-                DB::raw("DATE_FORMAT(attendance_sessions.date, '%M %Y') as month"),
+                DB::raw("{$monthExpr} as month"),
                 DB::raw("COUNT(attendance_records.id) as total"),
                 DB::raw("SUM(CASE WHEN attendance_records.status = 'present' THEN 1 ELSE 0 END) as present")
             )
             ->where('attendance_records.student_id', $student->id)
-            ->groupBy('month')
+            ->groupBy(DB::raw($monthExpr))
             ->orderBy(DB::raw("MIN(attendance_sessions.date)"))
             ->take(5)
             ->get()

@@ -296,7 +296,7 @@ class StudentDashboardController extends Controller
         $quizAssignments = $studentProfile->quizAssignments()
             ->with(['quiz.subject', 'quiz.questions', 'attempts', 'assignedBy'])
             ->whereIn('status', ['active', 'completed'])
-            ->orderByRaw("FIELD(status, 'active', 'completed')")
+            ->orderByRaw("CASE WHEN status = 'active' THEN 1 WHEN status = 'completed' THEN 2 ELSE 3 END")
             ->orderBy('start_date', 'asc')
             ->get();
 
