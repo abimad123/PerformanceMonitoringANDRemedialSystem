@@ -101,6 +101,9 @@ return [
                     ? ";options='endpoint=" . explode('.', env('DB_HOST', ''))[0] . "'"
                     : ''
             ),
+            'options' => [
+                \PDO::ATTR_EMULATE_PREPARES => true,
+            ],
         ],
 
         'sqlsrv' => [
