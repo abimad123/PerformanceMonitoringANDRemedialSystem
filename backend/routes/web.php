@@ -51,6 +51,15 @@ use App\Http\Controllers\User\TeacherController;
 // Redirect root to dashboard (or login if unauthenticated)
 Route::get('/', fn() => redirect()->route('dashboard'));
 
+Route::get('/debug-user', function() {
+    $user = \App\Models\User::where('email', 'abijithc140@gmail.com')->first();
+    return [
+        'exists' => !!$user,
+        'hash_starts_with' => $user ? substr($user->password, 0, 7) : null,
+        'check_admin123' => $user ? \Illuminate\Support\Facades\Hash::check('Admin@123', $user->password) : false,
+    ];
+});
+
 // Auth routes (provided by Breeze)
 require __DIR__ . '/auth.php';
 
