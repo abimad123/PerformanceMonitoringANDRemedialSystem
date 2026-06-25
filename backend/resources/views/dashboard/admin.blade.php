@@ -854,7 +854,7 @@
                     url:   link
                 }).catch(function () {});
             } else {
-                copyInviteLink(); /* graceful fallback */
+                copyInviteLink();
             }
         }
 
