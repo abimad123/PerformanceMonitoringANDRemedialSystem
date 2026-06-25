@@ -54,32 +54,80 @@
 
         /* ── Invite Banner ── */
         .invite-banner {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #312e81 100%);
-            border-radius: 22px; padding: 30px 32px; color: #fff;
+            background: linear-gradient(135deg, #0e1726 0%, #161e2e 60%, #1e1b4b 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px; padding: 32px; color: #fff;
             display: flex; align-items: center; justify-content: space-between;
-            flex-wrap: wrap; gap: 24px; margin-bottom: 28px;
-            box-shadow: 0 12px 32px -4px rgba(15,23,42,0.3);
+            flex-wrap: wrap; gap: 28px; margin-bottom: 28px;
+            box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.35);
             position: relative; overflow: hidden;
         }
         .invite-banner::before {
-            content: ''; position: absolute; top: -60%; right: -5%;
-            width: 320px; height: 320px; border-radius: 50%;
-            background: radial-gradient(circle, rgba(108,92,231,0.45) 0%, transparent 70%);
+            content: ''; position: absolute; top: -40px; right: -40px;
+            width: 280px; height: 280px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(108,92,231,0.35) 0%, transparent 70%);
+            filter: blur(20px); pointer-events: none;
         }
         .invite-banner::after {
-            content: ''; position: absolute; bottom: -40%; left: 20%;
-            width: 180px; height: 180px; border-radius: 50%;
-            background: radial-gradient(circle, rgba(139,92,246,0.25) 0%, transparent 70%);
+            content: ''; position: absolute; bottom: -60px; left: 10%;
+            width: 220px; height: 220px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(59,130,246,0.2) 0%, transparent 70%);
+            filter: blur(20px); pointer-events: none;
         }
         .invite-input {
             flex: 1; max-width: 360px;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.18);
-            color: #fff; padding: 11px 16px;
-            border-radius: 12px; font-size: 13px; outline: none;
-            transition: border-color 0.2s;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff; padding: 12px 18px;
+            border-radius: 12px; font-size: 13.5px; outline: none;
+            transition: all 0.2s ease;
+            font-family: inherit;
         }
-        .invite-input:focus { border-color: rgba(139,92,246,0.6); }
+        .invite-input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.06);
+        }
+        .invite-copy-btn {
+            background: #ffffff;
+            color: #0f172a;
+            font-weight: 700;
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+        .invite-copy-btn:hover {
+            background: #f8fafc;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.25);
+        }
+        .invite-copy-btn:active {
+            transform: translateY(0);
+        }
+        .qrcode-box {
+            background: #ffffff;
+            padding: 14px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .qrcode-box:hover {
+            transform: scale(1.05) rotate(1deg);
+        }
 
         /* ── KPI Grid ── */
         .kpi-container {
@@ -272,13 +320,16 @@
             <h3 style="font-family:'Poppins',sans-serif;font-weight:800;font-size:22px;margin:0 0 8px;">Invite Students</h3>
             <p style="font-size:13px;color:rgba(255,255,255,0.7);margin:0 0 20px;max-width:460px;line-height:1.7;">Share this link with your organization to automatically join <strong style="color:#fff;">{{ auth()->user()->school->name ?? 'your school' }}</strong>.</p>
             <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                <input type="text" value="{{ $inviteLink }}" id="inviteLinkInput" readonly style="flex:1;max-width:360px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff;padding:11px 16px;border-radius:12px;font-size:13px;outline:none;">
-                <button class="btn-solid-primary" onclick="copyInviteLink()">Copy Link</button>
+                <input type="text" value="{{ $inviteLink }}" id="inviteLinkInput" readonly class="invite-input">
+                <button class="invite-copy-btn" onclick="copyInviteLink()">
+                    <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    Copy Link
+                </button>
                 <input type="hidden" value="{{ $schoolCode }}" id="schoolCodeInput">
             </div>
         </div>
         
-        <div style="background: #fff; padding: 12px; border-radius: 16px; display: flex; align-items: center; justify-content: center; position: relative; z-index: 2;" id="qrcode-container">
+        <div class="qrcode-box" id="qrcode-container">
             {{-- QR Code injected by JS --}}
         </div>
     </div>
@@ -578,12 +629,14 @@
             
             // Temporary button state change
             let btn = event.currentTarget;
-            let originalText = btn.innerText;
-            btn.innerText = "Copied!";
+            let originalHTML = btn.innerHTML;
+            btn.innerHTML = `<svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
             btn.style.background = "#10b981";
+            btn.style.color = "#ffffff";
             setTimeout(() => { 
-                btn.innerText = originalText; 
+                btn.innerHTML = originalHTML; 
                 btn.style.background = ""; 
+                btn.style.color = "";
             }, 2000);
         }
 
