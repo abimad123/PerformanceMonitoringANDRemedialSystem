@@ -247,7 +247,7 @@
 
         /* ----- Right QR panel ----- */
         .inv-qr-panel {
-            width: 170px;
+            width: 200px;
             flex-shrink: 0;
             display: flex;
             flex-direction: column;
@@ -268,8 +268,8 @@
         .inv-qr-frame canvas {
             display: block;
             border-radius: 4px;
-            width: 96px !important;
-            height: 96px !important;
+            width: 130px !important;
+            height: 130px !important;
         }
         .inv-scan-label {
             font-size: 10.5px;
@@ -866,8 +866,8 @@
             if (typeof QRCode !== 'undefined' && container && link) {
                 new QRCode(container, {
                     text:         link,
-                    width:        96,
-                    height:       96,
+                    width:        130,
+                    height:       130,
                     colorDark:    '#4c3d9e',
                     colorLight:   '#ffffff',
                     correctLevel: QRCode.CorrectLevel.M
