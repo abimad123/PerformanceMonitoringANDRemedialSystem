@@ -196,8 +196,8 @@
           <div class="grid-header">{{ $day }}</div>
         @endforeach
 
-        <!-- Build rows for Periods 1 to 6 -->
-        @for($p = 1; $p <= 6; $p++)
+        <!-- Build rows for Periods 1 to 8 -->
+        @for($p = 1; $p <= 8; $p++)
           <div class="grid-cell-label">Period {{ $p }}</div>
           @foreach($days as $day)
             @php
@@ -283,4 +283,38 @@
       </form>
     </div>
   </div>
+
+  @push('scripts')
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const periodSelect = document.querySelector('select[name="period_number"]');
+        const startTimeInput = document.querySelector('input[name="start_time"]');
+        const endTimeInput = document.querySelector('input[name="end_time"]');
+        
+        const periodTimes = {
+            1: { start: '08:30', end: '09:30' },
+            2: { start: '09:30', end: '10:30' },
+            3: { start: '10:30', end: '11:30' },
+            4: { start: '11:30', end: '12:30' },
+            5: { start: '12:30', end: '13:30' },
+            6: { start: '13:30', end: '14:30' },
+            7: { start: '14:30', end: '15:30' },
+            8: { start: '15:30', end: '16:30' }
+        };
+        
+        if (periodSelect && startTimeInput && endTimeInput) {
+            periodSelect.addEventListener('change', function() {
+                const period = this.value;
+                if (periodTimes[period]) {
+                    startTimeInput.value = periodTimes[period].start;
+                    endTimeInput.value = periodTimes[period].end;
+                } else {
+                    startTimeInput.value = '';
+                    endTimeInput.value = '';
+                }
+            });
+        }
+    });
+  </script>
+  @endpush
 </x-app-layout>
