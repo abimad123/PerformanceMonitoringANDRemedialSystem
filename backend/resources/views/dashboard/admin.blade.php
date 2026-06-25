@@ -52,81 +52,249 @@
         .btn-solid-dark:hover { background: #1e293b; transform: translateY(-2px); box-shadow: 0 8px 18px rgba(15,23,42,0.25); color:#fff; }
         .btn-sm { padding: 7px 14px; font-size: 12px; border-radius: 9px; }
 
-        /* ── Invite Banner ── */
-        .invite-banner {
-            background: linear-gradient(135deg, #0e1726 0%, #161e2e 60%, #1e1b4b 100%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 24px; padding: 32px; color: #fff;
-            display: flex; align-items: center; justify-content: space-between;
-            flex-wrap: wrap; gap: 28px; margin-bottom: 28px;
-            box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.35);
-            position: relative; overflow: hidden;
-        }
-        .invite-banner::before {
-            content: ''; position: absolute; top: -40px; right: -40px;
-            width: 280px; height: 280px; border-radius: 50%;
-            background: radial-gradient(circle, rgba(108,92,231,0.35) 0%, transparent 70%);
-            filter: blur(20px); pointer-events: none;
-        }
-        .invite-banner::after {
-            content: ''; position: absolute; bottom: -60px; left: 10%;
-            width: 220px; height: 220px; border-radius: 50%;
-            background: radial-gradient(circle, rgba(59,130,246,0.2) 0%, transparent 70%);
-            filter: blur(20px); pointer-events: none;
-        }
-        .invite-input {
-            flex: 1; max-width: 360px;
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #fff; padding: 12px 18px;
-            border-radius: 12px; font-size: 13.5px; outline: none;
-            transition: all 0.2s ease;
-            font-family: inherit;
-        }
-        .invite-input:focus {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.35);
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.06);
-        }
-        .invite-copy-btn {
+        /* ----- Card shell ----- */
+        .inv-card {
+            display: flex;
+            align-items: stretch;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1.5px solid #e8e3ff;
+            box-shadow: 0 2px 28px rgba(99, 77, 220, 0.09), 0 1px 4px rgba(99, 77, 220, 0.05);
             background: #ffffff;
-            color: #0f172a;
-            font-weight: 700;
-            padding: 12px 24px;
-            border-radius: 12px;
-            border: none;
-            cursor: pointer;
-            font-size: 13px;
-            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
-            transition: all 0.2s ease;
+            margin-bottom: 1.5rem;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        /* ----- Left violet stripe ----- */
+        .inv-stripe {
+            width: 200px;
+            flex-shrink: 0;
+            background: linear-gradient(155deg, #5b38c0 0%, #7c5af6 55%, #a78bfa 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .inv-stripe-circles::before,
+        .inv-stripe-circles::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.07);
+        }
+        .inv-stripe-circles::before { width: 130px; height: 130px; bottom: -35px; right: -35px; }
+        .inv-stripe-circles::after  { width: 75px;  height: 75px;  top: -20px;    left: -18px; }
+
+        /* Status pill */
+        .inv-pill {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            border-radius: 100px;
+            padding: 3px 11px;
+            margin-bottom: 14px;
+            width: fit-content;
+            position: relative;
+            z-index: 1;
+        }
+        .inv-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #4ade80;
+            box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.25);
+            flex-shrink: 0;
+        }
+        .inv-pill-text {
+            font-size: 10.5px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.92);
+            letter-spacing: 0.06em;
             text-transform: uppercase;
-            letter-spacing: 0.03em;
         }
-        .invite-copy-btn:hover {
-            background: #f8fafc;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.25);
+
+        /* Stripe heading */
+        .inv-stripe-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.2;
+            letter-spacing: -0.4px;
+            margin: 0 0 6px;
+            position: relative;
+            z-index: 1;
         }
-        .invite-copy-btn:active {
-            transform: translateY(0);
+        .inv-stripe-school {
+            font-size: 11.5px;
+            color: rgba(255, 255, 255, 0.68);
+            margin: 0;
+            position: relative;
+            z-index: 1;
+            line-height: 1.4;
         }
-        .qrcode-box {
-            background: #ffffff;
-            padding: 14px;
-            border-radius: 20px;
+
+        /* ----- Middle content ----- */
+        .inv-mid {
+            flex: 1;
+            padding: 1.75rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 16px;
+            border-right: 1.5px solid #ede9fe;
+            min-width: 0;
+        }
+        .inv-desc {
+            font-size: 13.5px;
+            color: #6b7280;
+            line-height: 1.7;
+            margin: 0;
+        }
+        .inv-desc strong {
+            color: #3d2fa0;
+            font-weight: 600;
+        }
+
+        /* Action row */
+        .inv-actions {
             display: flex;
             align-items: center;
-            justify-content: center;
-            position: relative;
-            z-index: 2;
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            gap: 10px;
+            flex-wrap: wrap;
         }
-        .qrcode-box:hover {
-            transform: scale(1.05) rotate(1deg);
+
+        /* Link display box */
+        .inv-link-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f8f7ff;
+            border: 1.5px solid #ddd6fe;
+            border-radius: 10px;
+            padding: 9px 13px;
+            min-width: 200px;
+            max-width: 340px;
+            flex: 1;
+            overflow: hidden;
+        }
+        .inv-link-icon {
+            width: 14px;
+            height: 14px;
+            color: #a78bfa;
+            flex-shrink: 0;
+        }
+        .inv-link-val {
+            font-size: 12px;
+            color: #4c3d9e;
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+        }
+
+        /* Primary CTA */
+        .inv-btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: linear-gradient(135deg, #6d4ac7 0%, #8b5cf6 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            letter-spacing: 0.01em;
+            font-family: inherit;
+            box-shadow: 0 3px 14px rgba(109, 74, 199, 0.32);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+        }
+        .inv-btn-primary svg { width: 14px; height: 14px; flex-shrink: 0; }
+        .inv-btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(109, 74, 199, 0.40);
+        }
+        .inv-btn-primary:active { transform: scale(0.97); box-shadow: none; }
+
+        /* Secondary CTA */
+        .inv-btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: #ffffff;
+            color: #6d4ac7;
+            border: 1.5px solid #ddd6fe;
+            border-radius: 10px;
+            padding: 9px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            font-family: inherit;
+            transition: background 0.15s ease, border-color 0.15s ease, transform 0.12s ease;
+        }
+        .inv-btn-secondary svg { width: 14px; height: 14px; flex-shrink: 0; }
+        .inv-btn-secondary:hover { background: #f5f3ff; border-color: #c4b5fd; }
+        .inv-btn-secondary:active { transform: scale(0.97); }
+
+        /* ----- Right QR panel ----- */
+        .inv-qr-panel {
+            width: 170px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 1.5rem 1.25rem;
+            background: #fafafa;
+        }
+        .inv-qr-frame {
+            background: #ffffff;
+            border: 1.5px solid #ede9fe;
+            border-radius: 12px;
+            padding: 10px;
+            line-height: 0;
+        }
+        .inv-qr-frame img,
+        .inv-qr-frame canvas {
+            display: block;
+            border-radius: 4px;
+            width: 96px !important;
+            height: 96px !important;
+        }
+        .inv-scan-label {
+            font-size: 10.5px;
+            color: #9ca3af;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            text-align: center;
+        }
+        .inv-scan-code {
+            font-size: 10px;
+            color: #c4b5fd;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-align: center;
+            font-family: monospace;
+        }
+
+        /* ----- Responsive ----- */
+        @media (max-width: 768px) {
+            .inv-card { flex-direction: column; }
+            .inv-stripe { width: 100%; flex-direction: row; align-items: center; gap: 16px; padding: 1.25rem 1.5rem; }
+            .inv-stripe-title { font-size: 18px; }
+            .inv-mid { border-right: none; border-top: 1.5px solid #ede9fe; }
+            .inv-qr-panel { width: 100%; flex-direction: row; justify-content: center; padding: 1rem 1.5rem; border-top: 1.5px solid #ede9fe; }
         }
 
         /* ── KPI Grid ── */
@@ -311,27 +479,66 @@
     </div>
 
     {{-- Invite Section --}}
-    <div class="invite-banner">
-        <div style="flex:1;min-width:280px;position:relative;z-index:2;">
-            <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:100px;padding:4px 12px;margin-bottom:14px;">
-                <span style="width:7px;height:7px;border-radius:50%;background:#10b981;"></span>
-                <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.85);">School Invite Portal</span>
+    <div class="inv-card">
+
+        {{-- LEFT STRIPE --}}
+        <div class="inv-stripe">
+            <div class="inv-stripe-circles"></div>
+            <div class="inv-pill">
+                <span class="inv-dot"></span>
+                <span class="inv-pill-text">Live</span>
             </div>
-            <h3 style="font-family:'Poppins',sans-serif;font-weight:800;font-size:22px;margin:0 0 8px;">Invite Students</h3>
-            <p style="font-size:13px;color:rgba(255,255,255,0.7);margin:0 0 20px;max-width:460px;line-height:1.7;">Share this link with your organization to automatically join <strong style="color:#fff;">{{ auth()->user()->school->name ?? 'your school' }}</strong>.</p>
-            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                <input type="text" value="{{ $inviteLink }}" id="inviteLinkInput" readonly class="invite-input">
-                <button class="invite-copy-btn" onclick="copyInviteLink()">
-                    <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                    Copy Link
+            <h3 class="inv-stripe-title">Invite<br>Students</h3>
+            <p class="inv-stripe-school">{{ auth()->user()->school->name ?? 'Your School' }}</p>
+        </div>
+
+        {{-- MIDDLE CONTENT --}}
+        <div class="inv-mid">
+            <p class="inv-desc">
+                Share this link and students will automatically join
+                <strong>{{ auth()->user()->school->name ?? 'your school' }}</strong>
+                — no manual setup needed.
+            </p>
+
+            <div class="inv-actions">
+                <div class="inv-link-box">
+                    <svg class="inv-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                    </svg>
+                    <span class="inv-link-val" id="inviteLinkVal">{{ $inviteLink }}</span>
+                    <input type="hidden" id="inviteLinkInput" value="{{ $inviteLink }}">
+                    <input type="hidden" id="schoolCodeInput" value="{{ $schoolCode }}">
+                </div>
+
+                <button class="inv-btn-primary" id="invCopyBtn" onclick="copyInviteLink()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                    <span id="invCopyLabel">Copy Link</span>
                 </button>
-                <input type="hidden" value="{{ $schoolCode }}" id="schoolCodeInput">
+
+                <button class="inv-btn-secondary" onclick="shareInviteLink()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                        <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                    </svg>
+                    Share
+                </button>
             </div>
         </div>
-        
-        <div class="qrcode-box" id="qrcode-container">
-            {{-- QR Code injected by JS --}}
+
+        {{-- RIGHT QR --}}
+        <div class="inv-qr-panel">
+            <div class="inv-qr-frame" id="qrcode-container">
+                {{-- QR injected by JS --}}
+            </div>
+            <span class="inv-scan-label">Scan to join</span>
+            <span class="inv-scan-code">{{ $schoolCode }}</span>
         </div>
+
     </div>
 
     {{-- KPI Cards --}}
@@ -608,37 +815,65 @@
             window.addEventListener('DOMContentLoaded', openTeacherModal);
         @endif
 
-        // Generate QR Code dynamically
-        window.addEventListener('DOMContentLoaded', function() {
-            var inviteLink = "{{ $inviteLink }}";
-            new QRCode(document.getElementById("qrcode-container"), {
-                text: inviteLink,
-                width: 100,
-                height: 100,
-                colorDark : "#0f172a",
-                colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.L
-            });
-        });
-
         function copyInviteLink() {
-            var input = document.getElementById("inviteLinkInput");
-            input.select();
-            input.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(input.value);
-            
-            // Temporary button state change
-            let btn = event.currentTarget;
-            let originalHTML = btn.innerHTML;
-            btn.innerHTML = `<svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
-            btn.style.background = "#10b981";
-            btn.style.color = "#ffffff";
-            setTimeout(() => { 
-                btn.innerHTML = originalHTML; 
-                btn.style.background = ""; 
-                btn.style.color = "";
-            }, 2000);
+            var link = document.getElementById('inviteLinkInput').value;
+            var btn  = document.getElementById('invCopyBtn');
+            var lbl  = document.getElementById('invCopyLabel');
+
+            navigator.clipboard.writeText(link).then(function () {
+                lbl.textContent = 'Copied!';
+                btn.style.background = 'linear-gradient(135deg, #059669 0%, #10b981 100%)';
+                btn.style.boxShadow  = '0 3px 14px rgba(5, 150, 105, 0.32)';
+
+                setTimeout(function () {
+                    lbl.textContent = 'Copy Link';
+                    btn.style.background = 'linear-gradient(135deg, #6d4ac7 0%, #8b5cf6 100%)';
+                    btn.style.boxShadow  = '0 3px 14px rgba(109, 74, 199, 0.32)';
+                }, 2500);
+            }).catch(function () {
+                /* Fallback for older browsers */
+                var tmp = document.createElement('textarea');
+                tmp.value = link;
+                document.body.appendChild(tmp);
+                tmp.select();
+                document.execCommand('copy');
+                document.body.removeChild(tmp);
+                lbl.textContent = 'Copied!';
+                setTimeout(function () { lbl.textContent = 'Copy Link'; }, 2500);
+            });
         }
+
+        function shareInviteLink() {
+            var link  = document.getElementById('inviteLinkInput').value;
+            var school = '{{ auth()->user()->school->name ?? "your school" }}';
+
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Join ' + school,
+                    text:  'Use this link to join ' + school + ' on PMRS.',
+                    url:   link
+                }).catch(function () {});
+            } else {
+                copyInviteLink(); /* graceful fallback */
+            }
+        }
+
+        /* Generate QR code after DOM + library are ready */
+        window.addEventListener('DOMContentLoaded', function () {
+            var container = document.getElementById('qrcode-container');
+            var link      = document.getElementById('inviteLinkInput').value;
+
+            if (typeof QRCode !== 'undefined' && container && link) {
+                new QRCode(container, {
+                    text:         link,
+                    width:        96,
+                    height:       96,
+                    colorDark:    '#4c3d9e',
+                    colorLight:   '#ffffff',
+                    correctLevel: QRCode.CorrectLevel.M
+                });
+            }
+        });
 
         // Performance Trend Chart - Premium UI
         window.addEventListener('DOMContentLoaded', function() {
