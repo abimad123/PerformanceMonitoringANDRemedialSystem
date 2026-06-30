@@ -419,7 +419,7 @@
       src="{{ route('animations.teacher') }}"
       autoplay
       loop
-      style="width: 200px; height: 200px;">
+      style="width: 450px; height: 450px;">
     </dotlottie-wc>
   </div>
 <div class="app-layout">
