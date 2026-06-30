@@ -416,7 +416,7 @@
   {{-- Global Loading Screen --}}
   <div id="global-loader" class="global-loader">
     <dotlottie-wc
-      src="{{ route('animations.teacher') }}"
+      src="{{ route('animations.teacher') }}?v={{ filemtime(resource_path('animations/Teacher.lottie')) }}"
       autoplay
       loop
       style="width: 450px; height: 450px;">
