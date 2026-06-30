@@ -60,6 +60,17 @@ Route::get('/debug-user', function() {
     ];
 });
 
+// Route to serve the Lottie animation file from resources
+Route::get('/animations/Teacher.lottie', function () {
+    $path = resource_path('animations/Teacher.lottie');
+    if (!file_exists($path)) {
+        abort(404);
+    }
+    return response()->file($path, [
+        'Content-Type' => 'application/octet-stream',
+    ]);
+})->name('animations.teacher');
+
 // Auth routes (provided by Breeze)
 require __DIR__ . '/auth.php';
 

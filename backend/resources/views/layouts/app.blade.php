@@ -381,11 +381,47 @@
       box-shadow:0 0 0 3px rgba(108,92,231,0.12), 0 8px 24px rgba(0,0,0,0.08);
     }
     .nb-search-mobile-icon { position:absolute; left:16px; top:50%; transform:translateY(-50%); color:var(--c-primary); pointer-events:none; display:flex; }
+
+    /* ── Global Loading Screen ── */
+    .global-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .global-loader.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .global-loader.fade-in {
+      opacity: 1;
+      visibility: visible;
+    }
   </style>
   @stack('styles')
-
+  {{-- Load DotLottie Player Web Component --}}
+  <script type="module" src="https://unpkg.com/@lottiefiles/dotlottie-wc@latest/dist/dotlottie-wc.js"></script>
 </head>
 <body>
+  {{-- Global Loading Screen --}}
+  <div id="global-loader" class="global-loader">
+    <dotlottie-wc
+      src="{{ route('animations.teacher') }}"
+      autoplay
+      loop
+      style="width: 200px; height: 200px;">
+    </dotlottie-wc>
+  </div>
 <div class="app-layout">
   <div class="main-content" id="main-content">
 
@@ -642,6 +678,95 @@
   });
 
   document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeDrawer(); } });
+
+  // ── Global Loader Logic ──
+  window.addEventListener('load', function () {
+    const loader = document.getElementById('global-loader');
+    if (loader) {
+      loader.classList.add('fade-out');
+      loader.classList.remove('fade-in');
+      setTimeout(() => {
+        loader.style.display = 'none';
+      }, 400);
+    }
+  });
+
+  // Handle BFcache (Back-Forward Cache) pageshow
+  window.addEventListener('pageshow', function (event) {
+    if (event.persisted) {
+      const loader = document.getElementById('global-loader');
+      if (loader) {
+        loader.classList.add('fade-out');
+        loader.classList.remove('fade-in');
+        setTimeout(() => {
+          loader.style.display = 'none';
+        }, 400);
+      }
+    }
+  });
+
+  // Intercept navigation click events
+  document.addEventListener('click', function (event) {
+    if (event.defaultPrevented) return;
+    
+    const anchor = event.target.closest('a');
+    if (!anchor) return;
+    
+    const href = anchor.getAttribute('href');
+    const target = anchor.getAttribute('target');
+    
+    // Skip if not a regular navigation link
+    if (
+      !href || 
+      href.startsWith('#') || 
+      href.startsWith('javascript:') || 
+      href.startsWith('mailto:') || 
+      href.startsWith('tel:') ||
+      anchor.hasAttribute('download') ||
+      (target && target.toLowerCase() === '_blank') ||
+      event.ctrlKey || 
+      event.metaKey || 
+      event.shiftKey
+    ) {
+      return;
+    }
+    
+    // Verify same-origin
+    try {
+      const url = new URL(href, window.location.href);
+      if (url.origin !== window.location.origin) {
+        return;
+      }
+    } catch (e) {
+      return;
+    }
+    
+    // Show loader
+    const loader = document.getElementById('global-loader');
+    if (loader) {
+      loader.style.display = 'flex';
+      // Force repaint
+      loader.offsetHeight;
+      loader.classList.remove('fade-out');
+      loader.classList.add('fade-in');
+    }
+  });
+
+  // Intercept form submissions
+  document.addEventListener('submit', function (event) {
+    if (event.defaultPrevented) return;
+    
+    const form = event.target;
+    if (form.getAttribute('target') === '_blank') return;
+    
+    const loader = document.getElementById('global-loader');
+    if (loader) {
+      loader.style.display = 'flex';
+      loader.offsetHeight;
+      loader.classList.remove('fade-out');
+      loader.classList.add('fade-in');
+    }
+  });
 </script>
 @stack('scripts')
 </body>
