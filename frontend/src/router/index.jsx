@@ -1,0 +1,137 @@
+/**
+ * ============================================================================
+ * router/index.jsx — Application Router
+ * ============================================================================
+ * Defines the complete route tree for the PMRS SPA.
+ *
+ * Current state (Phase 1):
+ *   - All dashboard routes show a placeholder "Coming Soon" page
+ *   - Auth pages remain on Laravel Blade (not in React Router)
+ *
+ * Phase 2+:
+ *   - Uncomment and import the real page components as they are migrated
+ *   - Replace the placeholder <DashboardPage> stubs with real pages
+ *
+ * Route Structure:
+ *   /                         → Landing Page (existing, untouched)
+ *   /dashboard/*              → Protected (AppLayout)
+ *   /students/*               → Protected (AppLayout)
+ *   ... (all app routes)
+ *   *                         → 404 NotFoundPage
+ * ============================================================================
+ */
+
+import { lazy, Suspense } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+
+import AppLayout     from '@/layouts/AppLayout';
+import GuestLayout   from '@/layouts/GuestLayout';
+import ProtectedRoute from './ProtectedRoute';
+import Loader        from '@/components/ui/Loader';
+import { ROLES }     from '@/constants/roles';
+
+// ── Page Imports (lazy-loaded) ────────────────────────────────────────────────
+// Phase 1: only stub pages
+const DashboardPage = lazy(() => import('@/pages/dashboard/DashboardPage'));
+const NotFoundPage  = lazy(() => import('@/pages/NotFoundPage'));
+
+// Phase 2+: uncomment and create these files as migration progresses
+// const AdminDashboard    = lazy(() => import('@/pages/dashboard/AdminDashboard'));
+// const TeacherDashboard  = lazy(() => import('@/pages/dashboard/TeacherDashboard'));
+// const StudentDashboard  = lazy(() => import('@/pages/dashboard/StudentDashboard'));
+// const StudentsIndex     = lazy(() => import('@/pages/students/StudentsIndex'));
+// ... etc
+
+// ── Loading fallback (Lottie loader) ─────────────────────────────────────────
+const PageLoader = () => <Loader visible />;
+
+function AppRouter() {
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <Routes>
+
+        {/* ── Protected App Routes ───────────────────────────────────────── */}
+        <Route
+          element={
+            <ProtectedRoute>
+              <AppLayout />
+            </ProtectedRoute>
+          }
+        >
+          {/* Dashboard */}
+          <Route path="/dashboard"         element={<DashboardPage />} />
+          <Route path="/dashboard/admin"   element={<DashboardPage role="admin"   />} />
+          <Route path="/dashboard/teacher" element={<DashboardPage role="teacher" />} />
+          <Route path="/dashboard/student" element={<DashboardPage role="student" />} />
+
+          {/* Phase 2+ routes — add real pages here as migration proceeds */}
+          <Route path="/students"            element={<DashboardPage stub="Students" />} />
+          <Route path="/students/create"     element={<DashboardPage stub="Create Student" />} />
+          <Route path="/students/:id"        element={<DashboardPage stub="Student Profile" />} />
+          <Route path="/students/:id/edit"   element={<DashboardPage stub="Edit Student" />} />
+
+          <Route path="/teachers"            element={<DashboardPage stub="Teachers" />} />
+          <Route path="/teachers/create"     element={<DashboardPage stub="Create Teacher" />} />
+          <Route path="/teachers/:id/edit"   element={<DashboardPage stub="Edit Teacher" />} />
+
+          <Route path="/subjects"            element={<DashboardPage stub="Subjects" />} />
+          <Route path="/subjects/create"     element={<DashboardPage stub="Create Subject" />} />
+          <Route path="/subjects/:id/edit"   element={<DashboardPage stub="Edit Subject" />} />
+
+          <Route path="/classes"             element={<DashboardPage stub="Academic Classes" />} />
+          <Route path="/classrooms"          element={<DashboardPage stub="Classrooms" />} />
+          <Route path="/teacher-allocations" element={<DashboardPage stub="Teacher Allocations" />} />
+          <Route path="/timetables"          element={<DashboardPage stub="Timetable" />} />
+
+          <Route path="/marks"               element={<DashboardPage stub="Marks" />} />
+          <Route path="/marks/create"        element={<DashboardPage stub="Add Marks" />} />
+
+          <Route path="/performance"         element={<DashboardPage stub="Performance" />} />
+          <Route path="/performance/student/:id" element={<DashboardPage stub="Student Performance" />} />
+          <Route path="/performance/slow-learners" element={<DashboardPage stub="Slow Learners" />} />
+
+          <Route path="/remedial"            element={<DashboardPage stub="Remedial" />} />
+          <Route path="/remedial/create"     element={<DashboardPage stub="Create Remedial Task" />} />
+          <Route path="/remedial/:id"        element={<DashboardPage stub="Remedial Detail" />} />
+          <Route path="/remedial/:id/edit"   element={<DashboardPage stub="Edit Remedial Task" />} />
+          <Route path="/remedial/:id/submissions" element={<DashboardPage stub="Remedial Submissions" />} />
+          <Route path="/remedial/:id/workspace"   element={<DashboardPage stub="Remedial Workspace" />} />
+
+          <Route path="/attendance"          element={<DashboardPage stub="Mark Attendance" />} />
+          <Route path="/attendance/mark/:id" element={<DashboardPage stub="Attendance Sheet" />} />
+          <Route path="/my-attendance"       element={<DashboardPage stub="My Attendance" />} />
+
+          <Route path="/quizzes"             element={<DashboardPage stub="Quizzes" />} />
+          <Route path="/quizzes/create"      element={<DashboardPage stub="Create Quiz" />} />
+          <Route path="/quizzes/:id"         element={<DashboardPage stub="Quiz Detail" />} />
+          <Route path="/quizzes/:id/edit"    element={<DashboardPage stub="Edit Quiz" />} />
+          <Route path="/quizzes/:id/assign"  element={<DashboardPage stub="Assign Quiz" />} />
+
+          <Route path="/quiz/attempt/:id"    element={<DashboardPage stub="Quiz Attempt" />} />
+          <Route path="/quiz/attempt/:id/results" element={<DashboardPage stub="Quiz Results" />} />
+
+          <Route path="/analytics/attendance" element={<DashboardPage stub="Attendance Analytics" />} />
+
+          <Route path="/reports"             element={<DashboardPage stub="Reports" />} />
+          <Route path="/profile"             element={<DashboardPage stub="Profile" />} />
+          <Route path="/my-progress"         element={<DashboardPage stub="My Progress" />} />
+          <Route path="/my-tasks"            element={<DashboardPage stub="My Tasks" />} />
+
+          {/* Remedial review (teacher) */}
+          <Route path="/remedial-submissions/:id/review" element={<DashboardPage stub="Submission Review" />} />
+        </Route>
+
+        {/* ── Root redirect ──────────────────────────────────────────────── */}
+        {/* The landing page (/) is still served at port 3000 by the existing App.jsx */}
+        {/* The authenticated app starts at /dashboard */}
+        <Route path="/dashboard" element={<Navigate to="/dashboard" replace />} />
+
+        {/* ── 404 ────────────────────────────────────────────────────────── */}
+        <Route path="*" element={<NotFoundPage />} />
+
+      </Routes>
+    </Suspense>
+  );
+}
+
+export default AppRouter;
