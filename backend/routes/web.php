@@ -83,6 +83,18 @@ Route::middleware('guest')->group(function () {
 // Protected routes — require authentication and email verification
 Route::middleware(['auth', 'verified'])->group(function () {
     
+    // React SPA: current user endpoint
+    Route::get('/api/user', fn() => response()->json([
+        'id'     => auth()->id(),
+        'name'   => auth()->user()->name,
+        'email'  => auth()->user()->email,
+        'role'   => auth()->user()->role,
+        'school' => auth()->user()->school ? [
+            'id'   => auth()->user()->school->id,
+            'name' => auth()->user()->school->name,
+        ] : null,
+    ]));
+    
     // Complete Profile (for Students)
     Route::get('/complete-profile', [StudentProfileController::class, 'create'])->name('complete-profile');
     Route::post('/complete-profile', [StudentProfileController::class, 'store'])->name('complete-profile.store');

@@ -34,6 +34,8 @@ import { ROLES }     from '@/constants/roles';
 // Phase 1: only stub pages
 const DashboardPage = lazy(() => import('@/pages/dashboard/DashboardPage'));
 const NotFoundPage  = lazy(() => import('@/pages/NotFoundPage'));
+const LandingPage   = lazy(() => import('@/pages/LandingPage'));
+const SubjectsPage  = lazy(() => import('@/pages/Subjects/SubjectsPage'));
 
 // Phase 2+: uncomment and create these files as migration progresses
 // const AdminDashboard    = lazy(() => import('@/pages/dashboard/AdminDashboard'));
@@ -49,6 +51,9 @@ function AppRouter() {
   return (
     <Suspense fallback={<PageLoader />}>
       <Routes>
+
+        {/* ── Public Landing Page ─────────────────────────────────────────── */}
+        <Route path="/" element={<LandingPage />} />
 
         {/* ── Protected App Routes ───────────────────────────────────────── */}
         <Route
@@ -74,7 +79,7 @@ function AppRouter() {
           <Route path="/teachers/create"     element={<DashboardPage stub="Create Teacher" />} />
           <Route path="/teachers/:id/edit"   element={<DashboardPage stub="Edit Teacher" />} />
 
-          <Route path="/subjects"            element={<DashboardPage stub="Subjects" />} />
+          <Route path="/subjects"            element={<SubjectsPage />} />
           <Route path="/subjects/create"     element={<DashboardPage stub="Create Subject" />} />
           <Route path="/subjects/:id/edit"   element={<DashboardPage stub="Edit Subject" />} />
 
@@ -122,7 +127,6 @@ function AppRouter() {
         </Route>
 
         {/* ── Root redirect ──────────────────────────────────────────────── */}
-        {/* The landing page (/) is still served at port 3000 by the existing App.jsx */}
         {/* The authenticated app starts at /dashboard */}
         <Route path="/dashboard" element={<Navigate to="/dashboard" replace />} />
 

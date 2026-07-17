@@ -43,9 +43,14 @@ use Illuminate\Http\Request;
 
 class SubjectController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $subjects = Subject::orderBy('name')->paginate(15);
+
+        if ($request->expectsJson()) {
+            return response()->json($subjects);
+        }
+
         return view('subjects.index', compact('subjects'));
     }
 
