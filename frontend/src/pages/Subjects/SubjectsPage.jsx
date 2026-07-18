@@ -14,7 +14,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { subjectService } from '@/services';
 import Card from '@/components/ui/Card';
 import Table from '@/components/ui/Table';
@@ -24,10 +24,22 @@ import EmptyState from '@/components/ui/EmptyState';
 import Pagination from '@/components/ui/Pagination';
 
 export default function SubjectsPage() {
+  const location = useLocation();
   const [subjects, setSubjects]   = useState([]);
   const [loading, setLoading]     = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [meta, setMeta]           = useState(null);
+  const [notification, setNotification] = useState(null);
+
+  useEffect(() => {
+    if (location.state?.successMessage) {
+      setNotification({ type: 'success', message: location.state.successMessage });
+      // Clear location state to avoid showing it on refresh
+      window.history.replaceState({}, document.title);
+      const timer = setTimeout(() => setNotification(null), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [location]);
 
   // Fetch subjects from Laravel controller
   const fetchSubjects = async (page = 1) => {
@@ -58,6 +70,39 @@ export default function SubjectsPage() {
   useEffect(() => {
     fetchSubjects();
   }, []);
+
+  const handleToggleStatus = async (id, currentStatus) => {
+    const newStatus = !currentStatus;
+    // Optimistic UI update
+    setSubjects(prev => prev.map(sub => sub.id === id ? { ...sub, is_active: newStatus } : sub));
+    
+    try {
+      await subjectService.updateSubject(id, { is_active: newStatus });
+      setNotification({ type: 'success', message: 'Subject status updated successfully.' });
+      const timer = setTimeout(() => setNotification(null), 3000);
+      return () => clearTimeout(timer);
+    } catch (err) {
+      console.error('Failed to toggle status:', err);
+      // Revert state
+      setSubjects(prev => prev.map(sub => sub.id === id ? { ...sub, is_active: currentStatus } : sub));
+      alert('Failed to update subject status.');
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this subject?')) {
+      try {
+        await subjectService.deleteSubject(id);
+        setSubjects(prev => prev.filter(sub => sub.id !== id));
+        setNotification({ type: 'success', message: 'Subject deleted successfully.' });
+        const timer = setTimeout(() => setNotification(null), 4000);
+        return () => clearTimeout(timer);
+      } catch (err) {
+        console.error('Failed to delete subject:', err);
+        alert('Failed to delete subject.');
+      }
+    }
+  };
 
   // Client-side search matching filterSubjects() from legacy Blade
   const filteredSubjects = subjects.filter((subject) => {
@@ -225,6 +270,16 @@ export default function SubjectsPage() {
         </Link>
       </div>
 
+      {notification && (
+        <div className={`alert alert-${notification.type}`} style={{ marginBottom: '24px' }}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginRight: '8px' }}>
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+          <span>{notification.message}</span>
+        </div>
+      )}
+
       {/* Table Card container */}
       <div className="premium-card">
         <div className="filter-bar">
@@ -311,8 +366,9 @@ export default function SubjectsPage() {
                     <td>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                         <div
-                          className={`toggle-switch ${subject.is_active ? 'active' : 'inactive'} cursor-not-allowed`}
-                          title="Toggle Status (requires edit)"
+                          className={`toggle-switch ${subject.is_active ? 'active' : 'inactive'}`}
+                          title="Toggle Status"
+                          onClick={() => handleToggleStatus(subject.id, subject.is_active)}
                         >
                           <div className="toggle-switch-handle"></div>
                         </div>
@@ -328,9 +384,8 @@ export default function SubjectsPage() {
                         </Link>
                         <button
                           type="button"
-                          className="action-btn danger cursor-not-allowed"
-                          disabled
-                          title="Delete is disabled on this overview"
+                          className="action-btn danger"
+                          onClick={() => handleDelete(subject.id)}
                         >
                           Delete
                         </button>

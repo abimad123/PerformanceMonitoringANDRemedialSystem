@@ -70,45 +70,98 @@ class SubjectController extends Controller
             'is_active' => 'boolean',
         ]);
 
-        $validated['is_active'] = $request->has('is_active');
+        if ($request->expectsJson()) {
+            $validated['is_active'] = $request->boolean('is_active');
+        } else {
+            $validated['is_active'] = $request->has('is_active');
+        }
+
         if (empty($validated['max_marks'])) {
             $validated['max_marks'] = 100;
         }
 
-        Subject::create($validated);
+        $subject = Subject::create($validated);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Subject created successfully.',
+                'data' => $subject
+            ], 201);
+        }
 
         return redirect()->route('subjects.index')->with('success', 'Subject created successfully.');
     }
 
-    public function edit(Subject $subject)
+    public function edit(Subject $subject, Request $request)
     {
+        if ($request->expectsJson()) {
+            return response()->json($subject);
+        }
+
         return view('subjects.edit', compact('subject'));
     }
 
     public function update(Request $request, Subject $subject)
     {
-        $validated = $request->validate([
+        $rules = [
             'name' => 'required|string|max:100',
             'code' => 'required|string|max:10|unique:subjects,code,' . $subject->id,
             'class' => 'required|string|max:50',
             'type' => 'nullable|in:theory,practical,both',
             'max_marks' => 'nullable|integer|min:1',
             'is_active' => 'boolean',
-        ]);
+        ];
 
-        $validated['is_active'] = $request->has('is_active');
-        if (empty($validated['max_marks'])) {
-            $validated['max_marks'] = 100;
+        // Partial update support for active/inactive toggles via JSON
+        if ($request->expectsJson() && $request->has('is_active') && !$request->has('name')) {
+            $rules = [
+                'is_active' => 'required|boolean',
+            ];
         }
 
-        $subject->update($validated);
+        $validated = $request->validate($rules);
+
+        if ($request->expectsJson()) {
+            if ($request->has('is_active')) {
+                $validated['is_active'] = $request->boolean('is_active');
+            }
+        } else {
+            $validated['is_active'] = $request->has('is_active');
+        }
+
+        if (!$request->has('name') && $request->expectsJson()) {
+            // Status toggle only
+            $subject->update($validated);
+        } else {
+            if (empty($validated['max_marks'])) {
+                $validated['max_marks'] = 100;
+            }
+            $subject->update($validated);
+        }
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Subject updated successfully.',
+                'data' => $subject
+            ]);
+        }
 
         return redirect()->route('subjects.index')->with('success', 'Subject updated successfully.');
     }
 
-    public function destroy(Subject $subject)
+    public function destroy(Subject $subject, Request $request)
     {
         $subject->delete();
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Subject deleted successfully.'
+            ]);
+        }
+
         return redirect()->route('subjects.index')->with('success', 'Subject deleted successfully.');
     }
 }

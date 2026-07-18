@@ -35,23 +35,19 @@ const api = axios.create({
   },
 });
 
-// ── CSRF Cookie Fetch ───────────────────────────────────────────────────────
-// Laravel Sanctum requires a CSRF cookie before any state-changing request.
-// We fetch it lazily — only before POST/PUT/PATCH/DELETE.
-let csrfInitialized = false;
-
-const ensureCsrf = async () => {
-  if (!csrfInitialized) {
-    await axios.get(`${BACKEND_URL}/sanctum/csrf-cookie`, { withCredentials: true });
-    csrfInitialized = true;
-  }
+// Helper to read cookies from JavaScript
+const getCookie = (name) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return decodeURIComponent(parts.pop().split(';').shift());
+  return null;
 };
 
 // ── Request Interceptor ─────────────────────────────────────────────────────
-api.interceptors.request.use(async (config) => {
-  const mutatingMethods = ['post', 'put', 'patch', 'delete'];
-  if (mutatingMethods.includes(config.method?.toLowerCase())) {
-    await ensureCsrf();
+api.interceptors.request.use((config) => {
+  const token = getCookie('XSRF-TOKEN');
+  if (token) {
+    config.headers['X-XSRF-TOKEN'] = token;
   }
   return config;
 }, (error) => Promise.reject(error));
@@ -64,15 +60,8 @@ api.interceptors.response.use(
 
     // 401 Unauthenticated → redirect to Laravel login page
     if (status === 401) {
-      // Reset CSRF state so next login attempt refreshes cookie
-      csrfInitialized = false;
       window.location.href = `${BACKEND_URL}/login`;
       return Promise.reject(error);
-    }
-
-    // 419 CSRF token mismatch → reset and let caller retry
-    if (status === 419) {
-      csrfInitialized = false;
     }
 
     return Promise.reject(error);
