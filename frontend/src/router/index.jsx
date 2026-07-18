@@ -38,6 +38,9 @@ const LandingPage   = lazy(() => import('@/pages/LandingPage'));
 const SubjectsPage  = lazy(() => import('@/pages/Subjects/SubjectsPage'));
 const SubjectCreatePage = lazy(() => import('@/pages/Subjects/SubjectCreatePage'));
 const SubjectEditPage   = lazy(() => import('@/pages/Subjects/SubjectEditPage'));
+const TeachersPage  = lazy(() => import('@/pages/Teachers/TeachersPage'));
+const TeacherCreatePage = lazy(() => import('@/pages/Teachers/TeacherCreatePage'));
+const TeacherEditPage   = lazy(() => import('@/pages/Teachers/TeacherEditPage'));
 
 // Phase 2+: uncomment and create these files as migration progresses
 // const AdminDashboard    = lazy(() => import('@/pages/dashboard/AdminDashboard'));
@@ -77,9 +80,9 @@ function AppRouter() {
           <Route path="/students/:id"        element={<DashboardPage stub="Student Profile" />} />
           <Route path="/students/:id/edit"   element={<DashboardPage stub="Edit Student" />} />
 
-          <Route path="/teachers"            element={<DashboardPage stub="Teachers" />} />
-          <Route path="/teachers/create"     element={<DashboardPage stub="Create Teacher" />} />
-          <Route path="/teachers/:id/edit"   element={<DashboardPage stub="Edit Teacher" />} />
+          <Route path="/teachers"            element={<TeachersPage />} />
+          <Route path="/teachers/create"     element={<TeacherCreatePage />} />
+          <Route path="/teachers/:id/edit"   element={<TeacherEditPage />} />
 
           <Route path="/subjects"            element={<SubjectsPage />} />
           <Route path="/subjects/create"     element={<SubjectCreatePage />} />

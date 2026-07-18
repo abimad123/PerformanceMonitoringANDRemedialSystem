@@ -45,7 +45,13 @@ class SubjectController extends Controller
 {
     public function index(Request $request)
     {
-        $subjects = Subject::orderBy('name')->paginate(15);
+        $query = Subject::orderBy('name');
+
+        if ($request->has('all') || $request->boolean('all')) {
+            $subjects = $query->get();
+        } else {
+            $subjects = $query->paginate(15);
+        }
 
         if ($request->expectsJson()) {
             return response()->json($subjects);
