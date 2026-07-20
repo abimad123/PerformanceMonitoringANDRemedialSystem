@@ -7,8 +7,7 @@ const SubjectForm = ({
   onSubmit, 
   errors, 
   loading, 
-  submitLabel = 'Save Subject',
-  isEdit = false
+  submitLabel = 'Save Subject' 
 }) => {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -17,138 +16,6 @@ const SubjectForm = ({
       [name]: type === 'checkbox' ? checked : value
     }));
   };
-
-  if (isEdit) {
-    return (
-      <form onSubmit={onSubmit}>
-        <div className="form-group">
-          <label className="form-label" htmlFor="name">Subject Name *</label>
-          <input 
-            type="text" 
-            id="name" 
-            name="name" 
-            value={formData.name || ''} 
-            onChange={handleChange}
-            className="form-control" 
-            placeholder="e.g. Mathematics" 
-            required 
-            disabled={loading}
-          />
-          {errors?.name && (
-            <div className="form-error" style={{ color: '#ef4444', fontSize: '14px', marginTop: '4px' }}>
-              {errors.name[0]}
-            </div>
-          )}
-        </div>
-
-        <div className="form-group" style={{ marginTop: '15px' }}>
-          <label className="form-label" htmlFor="code">Subject Code *</label>
-          <input 
-            type="text" 
-            id="code" 
-            name="code" 
-            value={formData.code || ''} 
-            onChange={handleChange}
-            className="form-control" 
-            placeholder="e.g. MAT101" 
-            required 
-            disabled={loading}
-          />
-          {errors?.code && (
-            <div className="form-error" style={{ color: '#ef4444', fontSize: '14px', marginTop: '4px' }}>
-              {errors.code[0]}
-            </div>
-          )}
-        </div>
-
-        <div className="form-group" style={{ marginTop: '15px' }}>
-          <label className="form-label" htmlFor="class">Class *</label>
-          <select 
-            id="class" 
-            name="class" 
-            value={formData.class || ''} 
-            onChange={handleChange}
-            className="form-control form-select" 
-            required
-            disabled={loading}
-          >
-            <option value="">Select Class</option>
-            {[...Array(12)].map((_, i) => (
-              <option key={i + 1} value={String(i + 1)}>Class {i + 1}</option>
-            ))}
-            <option value="All">All Classes</option>
-          </select>
-          {errors?.class && (
-            <div className="form-error" style={{ color: '#ef4444', fontSize: '14px', marginTop: '4px' }}>
-              {errors.class[0]}
-            </div>
-          )}
-        </div>
-
-        <div className="form-group" style={{ marginTop: '15px' }}>
-          <label className="form-label" htmlFor="type">Type</label>
-          <select 
-            id="type" 
-            name="type" 
-            value={formData.type || ''} 
-            onChange={handleChange}
-            className="form-control form-select"
-            disabled={loading}
-          >
-            <option value="">Select Type</option>
-            <option value="theory">Theory</option>
-            <option value="practical">Practical</option>
-            <option value="both">Both</option>
-          </select>
-          {errors?.type && (
-            <div className="form-error" style={{ color: '#ef4444', fontSize: '14px', marginTop: '4px' }}>
-              {errors.type[0]}
-            </div>
-          )}
-        </div>
-
-        <div className="form-group" style={{ marginTop: '15px' }}>
-          <label className="form-label" htmlFor="max_marks">Max Marks</label>
-          <input 
-            type="number" 
-            id="max_marks" 
-            name="max_marks" 
-            value={formData.max_marks || ''} 
-            onChange={handleChange}
-            className="form-control" 
-            placeholder="100" 
-            disabled={loading}
-          />
-          {errors?.max_marks && (
-            <div className="form-error" style={{ color: '#ef4444', fontSize: '14px', marginTop: '4px' }}>
-              {errors.max_marks[0]}
-            </div>
-          )}
-        </div>
-
-        <div className="form-group" style={{ marginTop: '15px' }}>
-          <label className="form-label" style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-            <input 
-              type="checkbox" 
-              name="is_active" 
-              checked={!!formData.is_active} 
-              onChange={handleChange}
-              disabled={loading}
-              style={{ marginRight: '8px' }}
-            />
-            Active
-          </label>
-        </div>
-
-        <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
-          <button type="submit" className="btn btn-primary" disabled={loading}>
-            {loading ? 'Saving...' : submitLabel}
-          </button>
-          <Link to="/subjects" className="btn btn-outline">Cancel</Link>
-        </div>
-      </form>
-    );
-  }
 
   return (
     <form onSubmit={onSubmit}>

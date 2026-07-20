@@ -116,6 +116,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // Students
         Route::resource('students', StudentController::class);
+        Route::get('lookups/classes', [\App\Http\Controllers\Academic\LookupController::class, 'classes']);
+        Route::get('lookups/teachers', [\App\Http\Controllers\Academic\LookupController::class, 'teachers']);
+        Route::get('lookups/subjects', [\App\Http\Controllers\Academic\LookupController::class, 'subjects']);
 
         // Marks
         Route::resource('marks', MarkController::class)->only(['index', 'create', 'store', 'destroy']);

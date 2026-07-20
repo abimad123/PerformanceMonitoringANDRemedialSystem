@@ -38,7 +38,7 @@ const SubjectCreatePage = () => {
   };
 
   return (
-    <>
+    <div className="page-content">
       <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
           <h2 className="page-title">Add Subject</h2>
@@ -90,7 +90,7 @@ const SubjectCreatePage = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
