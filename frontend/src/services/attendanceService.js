@@ -1,31 +1,22 @@
 /**
  * ============================================================================
- * services/attendanceService.js — Attendance API Calls
+ * services/attendanceService.js — Attendance API Service
  * ============================================================================
- * Maps to:
- *   Teacher: GET /attendance, GET /attendance/mark/:id, POST /attendance/store/:id
- *   Student: GET /my-attendance
+ * Maps to backend Teacher/AttendanceController routes.
  * ============================================================================
  */
 
 import api from './api';
 
 const attendanceService = {
-  // ── Teacher ────────────────────────────────────────────────────────────────
+  /** GET /attendance — get today's schedule slots & completion keys */
+  getTodaySchedule: (params = {}) => api.get('/attendance', { params }),
 
-  /** GET /attendance — teacher's timetable slots for today */
-  getTeacherSlots: () => api.get('/api/attendance'),
+  /** GET /attendance/mark/:timetableId — get marking sheet data */
+  getMarkingSheet: (timetableId) => api.get(`/attendance/mark/${timetableId}`),
 
-  /** GET /attendance/mark/:timetableId — mark attendance form data */
-  getMarkData: (timetableId) => api.get(`/api/attendance/mark/${timetableId}`),
-
-  /** POST /attendance/store/:timetableId — submit attendance */
-  store: (timetableId, data) => api.post(`/api/attendance/store/${timetableId}`, data),
-
-  // ── Student ────────────────────────────────────────────────────────────────
-
-  /** GET /my-attendance — student's attendance records */
-  getStudentAttendance: (params = {}) => api.get('/api/my-attendance', { params }),
+  /** POST /attendance/store/:timetableId — store attendance records */
+  saveAttendance: (timetableId, data) => api.post(`/attendance/store/${timetableId}`, data),
 };
 
 export default attendanceService;

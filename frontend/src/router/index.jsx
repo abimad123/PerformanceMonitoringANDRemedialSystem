@@ -45,6 +45,9 @@ const StudentsPage  = lazy(() => import('@/pages/Students/StudentsPage'));
 const StudentCreatePage = lazy(() => import('@/pages/Students/StudentCreatePage'));
 const StudentEditPage   = lazy(() => import('@/pages/Students/StudentEditPage'));
 const StudentDetailPage = lazy(() => import('@/pages/Students/StudentDetailPage'));
+const AttendancePage  = lazy(() => import('@/pages/Attendance/AttendancePage'));
+const StudentAttendanceMarkPage = lazy(() => import('@/pages/Attendance/StudentAttendanceMarkPage'));
+const AttendanceEditPage = lazy(() => import('@/pages/Attendance/AttendanceEditPage'));
 
 // Phase 2+: uncomment and create these files as migration progresses
 // const AdminDashboard    = lazy(() => import('@/pages/dashboard/AdminDashboard'));
@@ -110,9 +113,10 @@ function AppRouter() {
           <Route path="/remedial/:id/submissions" element={<DashboardPage stub="Remedial Submissions" />} />
           <Route path="/remedial/:id/workspace"   element={<DashboardPage stub="Remedial Workspace" />} />
 
-          <Route path="/attendance"          element={<DashboardPage stub="Mark Attendance" />} />
-          <Route path="/attendance/mark/:id" element={<DashboardPage stub="Attendance Sheet" />} />
-          <Route path="/my-attendance"       element={<DashboardPage stub="My Attendance" />} />
+          <Route path="/attendance"                  element={<AttendancePage />} />
+          <Route path="/attendance/mark/:timetableId" element={<StudentAttendanceMarkPage />} />
+          <Route path="/attendance/:id/edit"         element={<AttendanceEditPage />} />
+          <Route path="/my-attendance"               element={<DashboardPage stub="My Attendance" />} />
 
           <Route path="/quizzes"             element={<DashboardPage stub="Quizzes" />} />
           <Route path="/quizzes/create"      element={<DashboardPage stub="Create Quiz" />} />
