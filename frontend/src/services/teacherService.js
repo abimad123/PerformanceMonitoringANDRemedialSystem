@@ -1,38 +1,28 @@
 /**
  * ============================================================================
- * services/teacherService.js — Teacher API Calls
+ * services/teacherService.js — Teacher API Service
  * ============================================================================
- * Maps to Laravel: Route::resource('teachers', TeacherController::class)
- * Admin only.
+ * Maps to backend TeacherController routes.
  * ============================================================================
  */
 
 import api from './api';
 
 const teacherService = {
-  /** GET /teachers */
-  getAll: (params = {}) => api.get('/api/teachers', { params }),
+  /** GET /teachers — index (expects JSON) */
+  getTeachers: (params = {}) => api.get('/teachers', { params }),
+  
+  /** GET /teachers/:id/edit — edit (expects JSON) */
+  getTeacher: (id) => api.get(`/teachers/${id}/edit`),
 
-  /** GET /teachers/:id */
-  getById: (id) => api.get(`/api/teachers/${id}`),
+  /** POST /teachers — store (expects JSON) */
+  createTeacher: (data) => api.post('/teachers', data),
 
-  /** POST /teachers */
-  create: (data) => api.post('/api/teachers', data),
+  /** PUT /teachers/:id — update (expects JSON) */
+  updateTeacher: (id, data) => api.put(`/teachers/${id}`, data),
 
-  /** PUT /teachers/:id */
-  update: (id, data) => api.put(`/api/teachers/${id}`, data),
-
-  /** DELETE /teachers/:id */
-  delete: (id) => api.delete(`/api/teachers/${id}`),
-
-  /** GET /teacher-allocations */
-  getAllocations: () => api.get('/api/teacher-allocations'),
-
-  /** POST /teacher-allocations */
-  createAllocation: (data) => api.post('/api/teacher-allocations', data),
-
-  /** DELETE /teacher-allocations/:id */
-  deleteAllocation: (id) => api.delete(`/api/teacher-allocations/${id}`),
+  /** DELETE /teachers/:id — destroy (expects JSON) */
+  deleteTeacher: (id) => api.delete(`/teachers/${id}`),
 };
 
 export default teacherService;

@@ -34,13 +34,23 @@ import { ROLES }     from '@/constants/roles';
 // Phase 1: only stub pages
 const DashboardPage = lazy(() => import('@/pages/dashboard/DashboardPage'));
 const NotFoundPage  = lazy(() => import('@/pages/NotFoundPage'));
-
-// Phase 2+: uncomment and create these files as migration progresses
-// const AdminDashboard    = lazy(() => import('@/pages/dashboard/AdminDashboard'));
-// const TeacherDashboard  = lazy(() => import('@/pages/dashboard/TeacherDashboard'));
-// const StudentDashboard  = lazy(() => import('@/pages/dashboard/StudentDashboard'));
-// const StudentsIndex     = lazy(() => import('@/pages/students/StudentsIndex'));
-// ... etc
+const LandingPage   = lazy(() => import('@/pages/LandingPage'));
+const SubjectsPage  = lazy(() => import('@/pages/Subjects/SubjectsPage'));
+const SubjectCreatePage = lazy(() => import('@/pages/Subjects/SubjectCreatePage'));
+const SubjectEditPage   = lazy(() => import('@/pages/Subjects/SubjectEditPage'));
+const TeachersPage  = lazy(() => import('@/pages/Teachers/TeachersPage'));
+const TeacherCreatePage = lazy(() => import('@/pages/Teachers/TeacherCreatePage'));
+const TeacherEditPage   = lazy(() => import('@/pages/Teachers/TeacherEditPage'));
+const StudentsPage  = lazy(() => import('@/pages/Students/StudentsPage'));
+const StudentCreatePage = lazy(() => import('@/pages/Students/StudentCreatePage'));
+const StudentEditPage   = lazy(() => import('@/pages/Students/StudentEditPage'));
+const StudentDetailPage = lazy(() => import('@/pages/Students/StudentDetailPage'));
+const AttendancePage  = lazy(() => import('@/pages/Attendance/AttendancePage'));
+const StudentAttendanceMarkPage = lazy(() => import('@/pages/Attendance/StudentAttendanceMarkPage'));
+const AttendanceEditPage = lazy(() => import('@/pages/Attendance/AttendanceEditPage'));
+const MarksPage      = lazy(() => import('@/pages/Marks/MarksPage'));
+const MarksEntryPage = lazy(() => import('@/pages/Marks/MarksEntryPage'));
+const MarksEditPage  = lazy(() => import('@/pages/Marks/MarksEditPage'));
 
 // ── Loading fallback (Lottie loader) ─────────────────────────────────────────
 const PageLoader = () => <Loader visible />;
@@ -49,6 +59,9 @@ function AppRouter() {
   return (
     <Suspense fallback={<PageLoader />}>
       <Routes>
+
+        {/* ── Public Landing Page ─────────────────────────────────────────── */}
+        <Route path="/" element={<LandingPage />} />
 
         {/* ── Protected App Routes ───────────────────────────────────────── */}
         <Route
@@ -64,27 +77,28 @@ function AppRouter() {
           <Route path="/dashboard/teacher" element={<DashboardPage role="teacher" />} />
           <Route path="/dashboard/student" element={<DashboardPage role="student" />} />
 
-          {/* Phase 2+ routes — add real pages here as migration proceeds */}
-          <Route path="/students"            element={<DashboardPage stub="Students" />} />
-          <Route path="/students/create"     element={<DashboardPage stub="Create Student" />} />
-          <Route path="/students/:id"        element={<DashboardPage stub="Student Profile" />} />
-          <Route path="/students/:id/edit"   element={<DashboardPage stub="Edit Student" />} />
+          <Route path="/students"            element={<StudentsPage />} />
+          <Route path="/students/create"     element={<StudentCreatePage />} />
+          <Route path="/students/:id"        element={<StudentDetailPage />} />
+          <Route path="/students/:id/edit"   element={<StudentEditPage />} />
 
-          <Route path="/teachers"            element={<DashboardPage stub="Teachers" />} />
-          <Route path="/teachers/create"     element={<DashboardPage stub="Create Teacher" />} />
-          <Route path="/teachers/:id/edit"   element={<DashboardPage stub="Edit Teacher" />} />
+          <Route path="/teachers"            element={<TeachersPage />} />
+          <Route path="/teachers/create"     element={<TeacherCreatePage />} />
+          <Route path="/teachers/:id/edit"   element={<TeacherEditPage />} />
 
-          <Route path="/subjects"            element={<DashboardPage stub="Subjects" />} />
-          <Route path="/subjects/create"     element={<DashboardPage stub="Create Subject" />} />
-          <Route path="/subjects/:id/edit"   element={<DashboardPage stub="Edit Subject" />} />
+          <Route path="/subjects"            element={<SubjectsPage />} />
+          <Route path="/subjects/create"     element={<SubjectCreatePage />} />
+          <Route path="/subjects/:id/edit"   element={<SubjectEditPage />} />
 
           <Route path="/classes"             element={<DashboardPage stub="Academic Classes" />} />
           <Route path="/classrooms"          element={<DashboardPage stub="Classrooms" />} />
           <Route path="/teacher-allocations" element={<DashboardPage stub="Teacher Allocations" />} />
           <Route path="/timetables"          element={<DashboardPage stub="Timetable" />} />
 
-          <Route path="/marks"               element={<DashboardPage stub="Marks" />} />
-          <Route path="/marks/create"        element={<DashboardPage stub="Add Marks" />} />
+          <Route path="/marks"               element={<MarksPage />} />
+          <Route path="/marks/create"        element={<MarksEntryPage />} />
+          <Route path="/marks/entry/:id"     element={<MarksEntryPage />} />
+          <Route path="/marks/:id/edit"      element={<MarksEditPage />} />
 
           <Route path="/performance"         element={<DashboardPage stub="Performance" />} />
           <Route path="/performance/student/:id" element={<DashboardPage stub="Student Performance" />} />
@@ -97,9 +111,10 @@ function AppRouter() {
           <Route path="/remedial/:id/submissions" element={<DashboardPage stub="Remedial Submissions" />} />
           <Route path="/remedial/:id/workspace"   element={<DashboardPage stub="Remedial Workspace" />} />
 
-          <Route path="/attendance"          element={<DashboardPage stub="Mark Attendance" />} />
-          <Route path="/attendance/mark/:id" element={<DashboardPage stub="Attendance Sheet" />} />
-          <Route path="/my-attendance"       element={<DashboardPage stub="My Attendance" />} />
+          <Route path="/attendance"                  element={<AttendancePage />} />
+          <Route path="/attendance/mark/:timetableId" element={<StudentAttendanceMarkPage />} />
+          <Route path="/attendance/:id/edit"         element={<AttendanceEditPage />} />
+          <Route path="/my-attendance"               element={<DashboardPage stub="My Attendance" />} />
 
           <Route path="/quizzes"             element={<DashboardPage stub="Quizzes" />} />
           <Route path="/quizzes/create"      element={<DashboardPage stub="Create Quiz" />} />
@@ -122,7 +137,6 @@ function AppRouter() {
         </Route>
 
         {/* ── Root redirect ──────────────────────────────────────────────── */}
-        {/* The landing page (/) is still served at port 3000 by the existing App.jsx */}
         {/* The authenticated app starts at /dashboard */}
         <Route path="/dashboard" element={<Navigate to="/dashboard" replace />} />
 

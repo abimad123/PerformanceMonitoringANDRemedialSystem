@@ -12,6 +12,7 @@
 export { default as authService       } from './authService';
 export { default as studentService    } from './studentService';
 export { default as teacherService    } from './teacherService';
+export { default as subjectService    } from './subjectService';
 export { default as attendanceService } from './attendanceService';
 export { default as markService       } from './markService';
 export { default as performanceService} from './performanceService';
