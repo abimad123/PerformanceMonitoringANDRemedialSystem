@@ -23,7 +23,7 @@ import {
   Mail
 } from "lucide-react";
 
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 const NAVY = "#152238";
 const MARIGOLD = "#F2A93B";
 
