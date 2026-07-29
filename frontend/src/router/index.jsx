@@ -48,13 +48,9 @@ const StudentDetailPage = lazy(() => import('@/pages/Students/StudentDetailPage'
 const AttendancePage  = lazy(() => import('@/pages/Attendance/AttendancePage'));
 const StudentAttendanceMarkPage = lazy(() => import('@/pages/Attendance/StudentAttendanceMarkPage'));
 const AttendanceEditPage = lazy(() => import('@/pages/Attendance/AttendanceEditPage'));
-
-// Phase 2+: uncomment and create these files as migration progresses
-// const AdminDashboard    = lazy(() => import('@/pages/dashboard/AdminDashboard'));
-// const TeacherDashboard  = lazy(() => import('@/pages/dashboard/TeacherDashboard'));
-// const StudentDashboard  = lazy(() => import('@/pages/dashboard/StudentDashboard'));
-// const StudentsIndex     = lazy(() => import('@/pages/students/StudentsIndex'));
-// ... etc
+const MarksPage      = lazy(() => import('@/pages/Marks/MarksPage'));
+const MarksEntryPage = lazy(() => import('@/pages/Marks/MarksEntryPage'));
+const MarksEditPage  = lazy(() => import('@/pages/Marks/MarksEditPage'));
 
 // ── Loading fallback (Lottie loader) ─────────────────────────────────────────
 const PageLoader = () => <Loader visible />;
@@ -99,8 +95,10 @@ function AppRouter() {
           <Route path="/teacher-allocations" element={<DashboardPage stub="Teacher Allocations" />} />
           <Route path="/timetables"          element={<DashboardPage stub="Timetable" />} />
 
-          <Route path="/marks"               element={<DashboardPage stub="Marks" />} />
-          <Route path="/marks/create"        element={<DashboardPage stub="Add Marks" />} />
+          <Route path="/marks"               element={<MarksPage />} />
+          <Route path="/marks/create"        element={<MarksEntryPage />} />
+          <Route path="/marks/entry/:id"     element={<MarksEntryPage />} />
+          <Route path="/marks/:id/edit"      element={<MarksEditPage />} />
 
           <Route path="/performance"         element={<DashboardPage stub="Performance" />} />
           <Route path="/performance/student/:id" element={<DashboardPage stub="Student Performance" />} />

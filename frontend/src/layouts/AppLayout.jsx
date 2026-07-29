@@ -6,7 +6,7 @@
  *   - Floating Navbar
  *   - Mobile Sidebar Drawer
  *   - Flash message area (Toast)
- *   - Page content slot
+ *   - Page content slot with progressive ContentSkeleton fallback
  *
  * Usage:
  *   <AppLayout>
@@ -20,23 +20,27 @@
  * ============================================================================
  */
 
-import { useState } from 'react';
+import { useState, useCallback, Suspense } from 'react';
 import { Outlet }   from 'react-router-dom';
-import { AnimatePresence, motion } from 'motion/react';
+import { motion } from 'motion/react';
 import { Navbar  } from '@/components/layout';
 import { Sidebar } from '@/components/layout';
+import ContentSkeleton from '@/components/ui/ContentSkeleton';
 
 function AppLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const handleMenuOpen = useCallback(() => setSidebarOpen(true), []);
+  const handleSidebarClose = useCallback(() => setSidebarOpen(false), []);
 
   return (
     <div className="min-h-screen" style={{ background: 'linear-gradient(180deg,#f8fafc 0%,#eef2ff 100%)', backgroundAttachment: 'fixed' }}>
 
       {/* Floating Navbar */}
-      <Navbar onMenuOpen={() => setSidebarOpen(true)} />
+      <Navbar onMenuOpen={handleMenuOpen} />
 
       {/* Mobile Sidebar */}
-      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <Sidebar open={sidebarOpen} onClose={handleSidebarClose} />
 
       {/* Page Content */}
       <motion.main
@@ -46,8 +50,10 @@ function AppLayout({ children }) {
         transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
         className="page-content"
       >
-        {/* Render either children prop or nested <Route> via <Outlet /> */}
-        {children ?? <Outlet />}
+        {/* Render either children prop or nested <Route> via <Outlet /> with progressive Suspense fallback */}
+        <Suspense fallback={<ContentSkeleton />}>
+          {children ?? <Outlet />}
+        </Suspense>
       </motion.main>
 
     </div>

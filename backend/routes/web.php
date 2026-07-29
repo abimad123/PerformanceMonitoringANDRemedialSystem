@@ -121,7 +121,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('lookups/subjects', [\App\Http\Controllers\Academic\LookupController::class, 'subjects']);
 
         // Marks
-        Route::resource('marks', MarkController::class)->only(['index', 'create', 'store', 'destroy']);
+        Route::resource('marks', MarkController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
 
         // Performance
         Route::prefix('performance')->name('performance.')->group(function () {

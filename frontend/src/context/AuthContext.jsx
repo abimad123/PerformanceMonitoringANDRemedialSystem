@@ -1,37 +1,14 @@
-/**
- * ============================================================================
- * context/AuthContext.jsx — Authentication State Provider
- * ============================================================================
- *
- * PURPOSE:
- *   - Fetches the authenticated user from GET /api/user on mount
- *   - Provides user data, loading state, and role helpers app-wide
- *   - Handles logout via POST /logout
- *
- * USAGE:
- *   Wrap your app: <AuthProvider>...</AuthProvider>
- *   Consume:       const { user, loading, isAdmin } = useAuthContext();
- *
- * NOTE:
- *   This does NOT replace Laravel auth. Laravel sessions are the source
- *   of truth. This context only caches the user object client-side.
- * ============================================================================
- */
-
-import { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
 import api from '@/services/api';
 import { ROLES } from '@/constants/roles';
 
-// ── Context ─────────────────────────────────────────────────────────────────
 const AuthContext = createContext(null);
 
-// ── Provider ─────────────────────────────────────────────────────────────────
 export function AuthProvider({ children }) {
-  const [user, setUser]       = useState(null);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError]     = useState(null);
+  const [error, setError] = useState(null);
 
-  /** Fetch current user from Laravel session */
   const fetchUser = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -39,10 +16,8 @@ export function AuthProvider({ children }) {
       const { data } = await api.get('/api/user');
       setUser(data);
     } catch (err) {
-      // 401 = unauthenticated (normal for guests)
-      if (err.response?.status === 401) {
-        setUser(null);
-      } else {
+      setUser(null);
+      if (err.response?.status !== 401) {
         setError(err.message);
       }
     } finally {
@@ -50,45 +25,39 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  /** Log the user out via Laravel's POST /logout */
   const logout = useCallback(async () => {
     try {
       await api.post('/logout');
     } finally {
       setUser(null);
-      // Redirect to Laravel login page
       window.location.href = `${import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000'}/login`;
     }
   }, []);
 
-  // Fetch user once on mount
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
 
-  // ── Role Helpers ────────────────────────────────────────────────────────
-  const isAdmin   = () => user?.role === ROLES.ADMIN;
-  const isTeacher = () => user?.role === ROLES.TEACHER;
-  const isStudent = () => user?.role === ROLES.STUDENT;
-  const isAuthenticated = () => !!user;
+  const isAdmin = useCallback(() => user?.role === ROLES.ADMIN, [user]);
+  const isTeacher = useCallback(() => user?.role === ROLES.TEACHER, [user]);
+  const isStudent = useCallback(() => user?.role === ROLES.STUDENT, [user]);
+  const isAuthenticated = useCallback(() => !!user, [user]);
 
-  /** Return the role label string for display */
-  const getRoleLabel = () => {
-    if (isAdmin())   return 'Administrator';
-    if (isTeacher()) return 'Teacher';
-    if (isStudent()) return 'Student';
+  const getRoleLabel = useCallback(() => {
+    if (user?.role === ROLES.ADMIN) return 'Administrator';
+    if (user?.role === ROLES.TEACHER) return 'Teacher';
+    if (user?.role === ROLES.STUDENT) return 'Student';
     return 'User';
-  };
+  }, [user]);
 
-  /** Return the correct dashboard path for the current user's role */
-  const getDashboardPath = () => {
-    if (isAdmin())   return '/dashboard/admin';
-    if (isTeacher()) return '/dashboard/teacher';
-    if (isStudent()) return '/dashboard/student';
+  const getDashboardPath = useCallback(() => {
+    if (user?.role === ROLES.ADMIN) return '/dashboard/admin';
+    if (user?.role === ROLES.TEACHER) return '/dashboard/teacher';
+    if (user?.role === ROLES.STUDENT) return '/dashboard/student';
     return '/dashboard';
-  };
+  }, [user]);
 
-  const value = {
+  const value = useMemo(() => ({
     user,
     loading,
     error,
@@ -100,7 +69,7 @@ export function AuthProvider({ children }) {
     isAuthenticated,
     getRoleLabel,
     getDashboardPath,
-  };
+  }), [user, loading, error, logout, fetchUser, isAdmin, isTeacher, isStudent, isAuthenticated, getRoleLabel, getDashboardPath]);
 
   return (
     <AuthContext.Provider value={value}>
@@ -109,7 +78,6 @@ export function AuthProvider({ children }) {
   );
 }
 
-// ── Hook ─────────────────────────────────────────────────────────────────────
 export function useAuthContext() {
   const ctx = useContext(AuthContext);
   if (!ctx) {

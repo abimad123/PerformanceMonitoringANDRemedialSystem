@@ -52,7 +52,7 @@ class StudentController extends Controller
     public function index(Request $request)
     {
         $schoolId = auth()->user()->school_id;
-        $query = Student::with(['user'])
+        $query = Student::with(['user', 'marks'])
             ->where('students.school_id', $schoolId)
             ->join('users', 'students.user_id', '=', 'users.id')
             ->select('students.*')
