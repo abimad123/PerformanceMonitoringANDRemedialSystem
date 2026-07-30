@@ -32,6 +32,7 @@ import { ROLES }     from '@/constants/roles';
 
 // ── Page Imports (lazy-loaded) ────────────────────────────────────────────────
 // Phase 1: only stub pages
+const AdminDashboardPage = lazy(() => import('@/pages/dashboard/AdminDashboardPage'));
 const DashboardPage = lazy(() => import('@/pages/dashboard/DashboardPage'));
 const NotFoundPage  = lazy(() => import('@/pages/NotFoundPage'));
 const LandingPage   = lazy(() => import('@/pages/LandingPage'));
@@ -72,8 +73,8 @@ function AppRouter() {
           }
         >
           {/* Dashboard */}
-          <Route path="/dashboard"         element={<DashboardPage />} />
-          <Route path="/dashboard/admin"   element={<DashboardPage role="admin"   />} />
+          <Route path="/dashboard"         element={<AdminDashboardPage />} />
+          <Route path="/dashboard/admin"   element={<AdminDashboardPage />} />
           <Route path="/dashboard/teacher" element={<DashboardPage role="teacher" />} />
           <Route path="/dashboard/student" element={<DashboardPage role="student" />} />
 
