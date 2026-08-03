@@ -501,7 +501,10 @@ export default function LandingPage() {
         <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-full max-w-[1300px] px-4 md:px-6" aria-label="Main Navigation">
           <div className="flex items-center justify-between bg-white/70 backdrop-blur-2xl border border-black/5 rounded-full px-4 md:px-8 py-3 shadow-[0_8px_32px_0_rgba(21,34,56,0.06)]">
             <div className="flex items-center gap-2">
-              <a href="#" className="font-bold text-xl tracking-tight" style={{ color: NAVY }} aria-label="PMRS Homepage">PMRS</a>
+              <a href="#" className="flex items-center gap-2.5 font-bold text-xl tracking-tight" style={{ color: NAVY }} aria-label="PMRS Homepage">
+                <img src="/logo.png" alt="PMRS Logo" className="h-8 md:h-9 w-auto object-contain" />
+            
+              </a>
             </div>
             <div className="flex items-center gap-3 md:gap-6">
               <div className="hidden md:flex items-center gap-6 lg:gap-8">
@@ -1068,7 +1071,8 @@ function SiteFooter() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="md:col-span-4 flex flex-col gap-5">
             <div className="flex items-center gap-2">
-              <span className="font-bold text-2xl tracking-tight" style={{ color: NAVY }}>PMRS</span>
+               <img src="/logo.png" alt="PMRS Logo" className="h-8 md:h-9 w-auto object-contain" />
+           
             </div>
             <p className="text-[#1a1a1a]/60 text-[15px] font-medium leading-relaxed max-w-sm">
               Performance Monitoring & Remedial System — built for CBSE schools, one real classroom at a time.
