@@ -153,7 +153,7 @@ export default function NotFoundPage() {
         </div>
         <div className="flex items-center gap-6">
           <Link to="/" className="hover:text-[#152238] transition-colors">Landing</Link>
-          <a href="https://pmrs.abijith.me" className="hover:text-[#152238] transition-colors">System Status</a>
+          <a href="https://pmrs.live" className="hover:text-[#152238] transition-colors">System Status</a>
           <span>© {new Date().getFullYear()} PMRS</span>
         </div>
       </footer>
