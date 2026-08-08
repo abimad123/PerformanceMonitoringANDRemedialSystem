@@ -85,7 +85,7 @@ const PILOT_PROGRESS = [
 const FOUNDERS = [
   {
     initials: "A",
-    name: "Abi",
+    name: "Abijith C G",
     role: "Founder",
     focus: "Backend & Infrastructure",
     bio: "Builds PMRS end-to-end — the multi-tenant architecture, data isolation between schools, and the systems that keep every school's data exactly where it belongs.",
@@ -121,22 +121,24 @@ function SEOManager() {
     setMetaTag('meta[property="og:title"]', 'property', 'og:title', 'PMRS — Student Performance Tracking & Early Remedial Plans');
     setMetaTag('meta[property="og:description"]', 'property', 'og:description', 'Comprehensive student performance tracking platform for CBSE schools with adaptive quizzes and automated remedial plans.');
     setMetaTag('meta[property="og:type"]', 'property', 'og:type', 'website');
-    setMetaTag('meta[property="og:url"]', 'property', 'og:url', window.location.href);
-    setMetaTag('meta[property="og:image"]', 'property', 'og:image', `${BASE_URL}/assets/og-image.png`);
+    setMetaTag('meta[property="og:url"]', 'property', 'og:url', 'https://pmrs.live');
+    setMetaTag('meta[property="og:image"]', 'property', 'og:image', 'https://pmrs.live/logo.png');
     setMetaTag('meta[property="og:site_name"]', 'property', 'og:site_name', 'PMRS');
 
     setMetaTag('meta[name="twitter:card"]', 'name', 'twitter:card', 'summary_large_image');
     setMetaTag('meta[name="twitter:title"]', 'name', 'twitter:title', 'PMRS — Student Performance Tracking for CBSE Schools');
     setMetaTag('meta[name="twitter:description"]', 'name', 'twitter:description', 'Track student attendance, detect slow learners early, and assign adaptive quizzes and remedial plans.');
-    setMetaTag('meta[name="twitter:image"]', 'name', 'twitter:image', `${BASE_URL}/assets/og-image.png`);
+    setMetaTag('meta[name="twitter:image"]', 'name', 'twitter:image', 'https://pmrs.live/logo.png');
 
-    let script = document.querySelector('script[type="application/ld+json"]');
-    if (!script) {
-      script = document.createElement("script");
-      script.setAttribute("type", "application/ld+json");
-      document.head.appendChild(script);
+    // JSON-LD: SoftwareApplication schema
+    let scriptApp = document.querySelector('script[data-schema="SoftwareApplication"]');
+    if (!scriptApp) {
+      scriptApp = document.createElement("script");
+      scriptApp.setAttribute("type", "application/ld+json");
+      scriptApp.setAttribute("data-schema", "SoftwareApplication");
+      document.head.appendChild(scriptApp);
     }
-    script.textContent = JSON.stringify({
+    scriptApp.textContent = JSON.stringify({
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
       "name": "PMRS - Performance Monitoring and Remedial System",
@@ -159,6 +161,42 @@ function SEOManager() {
         "Adaptive MCQ Quizzes and Gamified XP System",
         "Interactive KPI Dashboards and Analytics"
       ]
+    });
+
+    // JSON-LD: Organization schema with founders
+    let scriptOrg = document.querySelector('script[data-schema="Organization"]');
+    if (!scriptOrg) {
+      scriptOrg = document.createElement("script");
+      scriptOrg.setAttribute("type", "application/ld+json");
+      scriptOrg.setAttribute("data-schema", "Organization");
+      document.head.appendChild(scriptOrg);
+    }
+    scriptOrg.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "PMRS",
+      "url": "https://pmrs.live",
+      "description": "PMRS empowers CBSE school administrators and teachers with real-time student performance tracking, attendance intelligence, adaptive quizzes, and early remedial plans.",
+      "logo": "https://pmrs.live/logo.png",
+      "founder": [
+        {
+          "@type": "Person",
+          "name": "Abijith C G",
+          "jobTitle": "Founder",
+          "description": "Backend & Infrastructure"
+        },
+        {
+          "@type": "Person",
+          "name": "Akanksha",
+          "jobTitle": "Co-founder",
+          "description": "Client Relations & Coordination"
+        }
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@pmrs.live"
+      }
     });
   }, []);
 
@@ -1082,7 +1120,7 @@ function SiteFooter() {
           <div className="md:col-span-6 flex flex-wrap gap-x-16 gap-y-10 md:justify-center">
             {[
               { title: "Product", links: [{ l: "Features", h: "#features" }, { l: "How it works", h: "#how-it-works" }, { l: "For schools", h: "#for-schools" }] },
-              { title: "Company", links: [{ l: "Founders", h: "#founders" }, { l: "Contact Us", h: "mailto:hello@devmax.example" }] },
+              { title: "Company", links: [{ l: "Founders", h: "#founders" }, { l: "Contact Us", h: "mailto:hello@pmrs.live" }] },
               { title: "Legal", links: [{ l: "Privacy Policy", h: "#" }, { l: "Terms of Service", h: "#" }, { l: "Data Processing Agreement", h: "#" }] },
             ].map((col, ci) => (
               <motion.div
@@ -1112,7 +1150,7 @@ function SiteFooter() {
             {[
               { Icon: Linkedin, label: "Visit PMRS on LinkedIn", href: "https://linkedin.com" },
               { Icon: Instagram, label: "Visit PMRS on Instagram", href: "https://instagram.com" },
-              { Icon: Mail, label: "Contact PMRS via Email", href: "mailto:hello@devmax.example" },
+              { Icon: Mail, label: "Contact PMRS via Email", href: "mailto:hello@pmrs.live" },
             ].map(({ Icon, label, href }) => (
               <motion.a
                 key={label}

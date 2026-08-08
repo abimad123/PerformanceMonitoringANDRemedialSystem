@@ -1,0 +1,8 @@
+# robots.txt for https://pmrs.live
+# Allow all crawlers full access
+
+User-agent: *
+Allow: /
+
+# Point crawlers to the sitemap
+Sitemap: https://pmrs.live/sitemap.xml

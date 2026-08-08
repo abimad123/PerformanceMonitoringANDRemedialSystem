@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Main landing page -->
+  <url>
+    <loc>https://pmrs.live/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Section: Features -->
+  <url>
+    <loc>https://pmrs.live/#features</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Section: Founders -->
+  <url>
+    <loc>https://pmrs.live/#founders</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Section: How it works -->
+  <url>
+    <loc>https://pmrs.live/#how-it-works</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Section: For schools -->
+  <url>
+    <loc>https://pmrs.live/#for-schools</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+</urlset>
