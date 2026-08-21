@@ -53,6 +53,12 @@ const MarksPage      = lazy(() => import('@/pages/Marks/MarksPage'));
 const MarksEntryPage = lazy(() => import('@/pages/Marks/MarksEntryPage'));
 const MarksEditPage  = lazy(() => import('@/pages/Marks/MarksEditPage'));
 
+// Academic structure pages (new)
+const ClassesPage        = lazy(() => import('@/pages/Academic/ClassesPage'));
+const SectionsPage       = lazy(() => import('@/pages/Academic/SectionsPage'));
+const AllocationsPage    = lazy(() => import('@/pages/Academic/AllocationsPage'));
+const TimetablePage      = lazy(() => import('@/pages/Academic/TimetablePage'));
+
 // ── Loading fallback (Lottie loader) ─────────────────────────────────────────
 const PageLoader = () => <Loader visible />;
 
@@ -91,10 +97,10 @@ function AppRouter() {
           <Route path="/subjects/create"     element={<SubjectCreatePage />} />
           <Route path="/subjects/:id/edit"   element={<SubjectEditPage />} />
 
-          <Route path="/classes"             element={<DashboardPage stub="Academic Classes" />} />
-          <Route path="/classrooms"          element={<DashboardPage stub="Classrooms" />} />
-          <Route path="/teacher-allocations" element={<DashboardPage stub="Teacher Allocations" />} />
-          <Route path="/timetables"          element={<DashboardPage stub="Timetable" />} />
+          <Route path="/classes"             element={<ClassesPage />} />
+          <Route path="/classrooms"          element={<SectionsPage />} />
+          <Route path="/teacher-allocations" element={<AllocationsPage />} />
+          <Route path="/timetables"          element={<TimetablePage />} />
 
           <Route path="/marks"               element={<MarksPage />} />
           <Route path="/marks/create"        element={<MarksEntryPage />} />
