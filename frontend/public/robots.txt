@@ -1,7 +1,8 @@
-# robots.txt for https://pmrs.live
+﻿# robots.txt for https://pmrs.live
 # Allow all crawlers full access to public pages
 User-agent: *
-Allow: /$
+Allow: /
+Allow: /pricing
 Disallow: /dashboard
 Disallow: /students
 Disallow: /teachers
@@ -24,3 +25,4 @@ Disallow: /remedial-submissions
 
 # Point crawlers to the sitemap
 Sitemap: https://pmrs.live/sitemap.xml
+

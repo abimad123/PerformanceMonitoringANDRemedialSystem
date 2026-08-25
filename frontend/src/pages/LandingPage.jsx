@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+﻿import React, { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import PricingCards from "@/components/pricing/PricingCards";
 import {
   BarChart3,
   UserCheck,
@@ -195,7 +196,7 @@ function SEOManager() {
       "contactPoint": {
         "@type": "ContactPoint",
         "contactType": "customer support",
-        "email": "hello@pmrs.live"
+        "email": "pmrsteam.official@gmail.com"
       }
     });
   }, []);
@@ -549,6 +550,7 @@ export default function LandingPage() {
                 {[
                   { label: "Features", href: "#features" },
                   { label: "How it works", href: "#how-it-works" },
+                  { label: "Pricing", href: "#pricing" },
                   { label: "Founders", href: "#founders" },
                   { label: "For schools", href: "#for-schools" },
                 ].map((item) => (
@@ -975,6 +977,26 @@ export default function LandingPage() {
           </div>
         </section>
 
+                <section id="pricing" className="py-24 md:py-32 px-6 bg-[#faf9f6]">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }} className="flex flex-col items-center text-center mb-16">
+            <h2 className="font-medium tracking-tight text-[#1a1a1a] mb-4" style={{ fontFamily: "'Instrument Serif', serif", fontSize: "clamp(32px, 4.5vw, 56px)" }}>
+              Plans designed for growing schools
+            </h2>
+            <p className="text-[#1a1a1a]/65 leading-relaxed max-w-lg text-[18px] font-medium">
+              Start with the capabilities you need today, and upgrade as your institution grows.
+            </p>
+          </motion.div>
+          
+          <PricingCards compact={true} />
+          
+          <div className="mt-16 text-center">
+            <a href="/pricing" className="inline-flex items-center gap-2 font-bold text-[16px] text-[#152238] hover:opacity-80 transition-opacity">
+              View Detailed Pricing
+              <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            </a>
+          </div>
+        </section>
+
         <section id="cta" className="relative w-full bg-[#0c0d10] py-32 md:py-48 overflow-hidden flex flex-col items-center text-center px-6 border-t border-white/[0.04]">
           <div className="absolute inset-0 z-0 pointer-events-none flex justify-center items-center overflow-hidden" style={{ perspective: "1200px" }} aria-hidden="true">
             <div
@@ -1119,8 +1141,8 @@ function SiteFooter() {
 
           <div className="md:col-span-6 flex flex-wrap gap-x-16 gap-y-10 md:justify-center">
             {[
-              { title: "Product", links: [{ l: "Features", h: "#features" }, { l: "How it works", h: "#how-it-works" }, { l: "For schools", h: "#for-schools" }] },
-              { title: "Company", links: [{ l: "Founders", h: "#founders" }, { l: "Contact Us", h: "mailto:hello@pmrs.live" }] },
+              { title: "Product", links: [{ l: "Features", h: "#features" }, { l: "How it works", h: "#how-it-works" }, { l: "Pricing", h: "/pricing" }, { l: "For schools", h: "#for-schools" }] },
+              { title: "Company", links: [{ l: "Founders", h: "#founders" }, { l: "Contact Us", h: "mailto:pmrsteam.official@gmail.com" }] },
               { title: "Legal", links: [{ l: "Privacy Policy", h: "#" }, { l: "Terms of Service", h: "#" }, { l: "Data Processing Agreement", h: "#" }] },
             ].map((col, ci) => (
               <motion.div
@@ -1150,7 +1172,7 @@ function SiteFooter() {
             {[
               { Icon: Linkedin, label: "Visit PMRS on LinkedIn", href: "https://linkedin.com" },
               { Icon: Instagram, label: "Visit PMRS on Instagram", href: "https://instagram.com" },
-              { Icon: Mail, label: "Contact PMRS via Email", href: "mailto:hello@pmrs.live" },
+              { Icon: Mail, label: "Contact PMRS via Email", href: "mailto:pmrsteam.official@gmail.com" },
             ].map(({ Icon, label, href }) => (
               <motion.a
                 key={label}
@@ -1171,7 +1193,7 @@ function SiteFooter() {
 
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-black/10 pt-8 mt-4">
           <span className="text-[13px] font-medium text-[#19181a]/50 text-center sm:text-left">
-            © {new Date().getFullYear()} DevMax Educational Solutions. All rights reserved.
+            Â© {new Date().getFullYear()} DevMax Educational Solutions. All rights reserved.
           </span>
           <span className="text-[12px] text-[#19181a]/40 font-bold uppercase tracking-widest">Built by students, for schools</span>
         </div>
@@ -1191,3 +1213,4 @@ function SiteFooter() {
     </footer>
   );
 }
+
