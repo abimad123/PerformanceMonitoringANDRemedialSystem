@@ -1,6 +1,6 @@
-import React from "react";
-import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, CheckCircle2, Users } from "lucide-react";
+import React, { useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { ArrowRight, CheckCircle2, ChevronDown, Users } from "lucide-react";
 import { CONTACT_EMAIL } from "@/config/pricing";
 
 const NAVY = "#152238";
@@ -9,7 +9,8 @@ const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
 export default function PricingCard({ plan, compact = false }) {
   const reduceMotion = useReducedMotion();
-  const visibleFeatures = plan.features.slice(0, compact ? 5 : 3);
+  const [showFeatures, setShowFeatures] = useState(false);
+  const visibleFeatures = compact ? plan.features.slice(0, 5) : plan.features;
 
   const handleCta = () => {
     if (plan.ctaType === "outline") {
@@ -90,29 +91,22 @@ export default function PricingCard({ plan, compact = false }) {
         </span>
       </div>
 
-      <div className="mb-4 h-px bg-[#152238]/[0.08]" />
-      <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.15em] text-[#152238]/45">What’s included</p>
-      <ul className="mb-4 flex flex-1 flex-col gap-2" role="list">
-        {visibleFeatures.map((feature) => (
-          <li key={feature} className="flex items-start gap-2.5 text-[13px] font-medium leading-snug text-[#1a1a1a]/70">
-            <CheckCircle2
-              className="mt-0.5 h-4 w-4 flex-shrink-0"
-              style={{ color: plan.highlighted ? MARIGOLD : NAVY }}
-              aria-hidden="true"
-            />
-            <span>{feature}</span>
-          </li>
-        ))}
-      </ul>
-
-      {compact ? (
-        <p className="mb-5 pl-6 text-[12px] font-semibold text-[#152238]/50">
-          + {plan.features.length - visibleFeatures.length} more features
-        </p>
-      ) : (
-        <a href="/pricing/#compare-plans" className="mb-4 inline-flex w-fit items-center gap-1.5 text-[13px] font-bold text-[#152238] underline decoration-[#F2A93B] underline-offset-4 transition-all hover:gap-2.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F2A93B]">
-          View full plan comparison <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
-        </a>
+      {compact && (
+        <>
+          <div className="mb-4 h-px bg-[#152238]/[0.08]" />
+          <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.15em] text-[#152238]/45">What’s included</p>
+          <ul className="mb-4 flex flex-1 flex-col gap-2" role="list">
+            {visibleFeatures.map((feature) => (
+              <li key={feature} className="flex items-start gap-2.5 text-[13px] font-medium leading-snug text-[#1a1a1a]/70">
+                <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0" style={{ color: plan.highlighted ? MARIGOLD : NAVY }} aria-hidden="true" />
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="mb-5 pl-6 text-[12px] font-semibold text-[#152238]/50">
+            + {plan.features.length - visibleFeatures.length} more features
+          </p>
+        </>
       )}
 
       <button
@@ -122,6 +116,45 @@ export default function PricingCard({ plan, compact = false }) {
       >
         {plan.cta}
       </button>
+
+      {!compact && (
+        <div className="mt-5 border-t border-[#152238]/[0.08] pt-4">
+          <button
+            type="button"
+            onClick={() => setShowFeatures((current) => !current)}
+            aria-expanded={showFeatures}
+            aria-controls={`plan-features-${plan.id}`}
+            className="flex w-full items-center justify-between text-left text-[13px] font-bold text-[#152238] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F2A93B]"
+          >
+            {showFeatures ? "Hide included features" : "See what’s included"}
+            <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${showFeatures ? "rotate-180" : ""}`} aria-hidden="true" />
+          </button>
+          <div id={`plan-features-${plan.id}`}>
+            <AnimatePresence initial={false}>
+              {showFeatures && (
+                <motion.ul
+                  role="list"
+                  initial={reduceMotion ? false : { height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={reduceMotion ? undefined : { height: 0, opacity: 0 }}
+                  transition={{ duration: reduceMotion ? 0 : 0.25 }}
+                  className="mt-4 flex flex-col gap-2.5 overflow-hidden pb-1"
+                >
+                  {visibleFeatures.map((feature) => (
+                    <li key={feature} className="flex items-start gap-2.5 text-[13px] font-medium leading-snug text-[#1a1a1a]/70">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0" style={{ color: plan.highlighted ? MARIGOLD : NAVY }} aria-hidden="true" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </motion.ul>
+              )}
+            </AnimatePresence>
+          </div>
+          <a href="/pricing/#compare-plans" className="mt-3 inline-flex w-fit items-center gap-1.5 text-[12px] font-semibold text-[#152238]/65 underline decoration-[#F2A93B] underline-offset-4 transition-all hover:gap-2.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F2A93B]">
+            Compare plans <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+          </a>
+        </div>
+      )}
     </motion.div>
   );
 }
