@@ -16,7 +16,7 @@ export default function FeatureComparison() {
   const planNames = PLANS.map((p) => p.name);
 
   return (
-    <section className="py-20 md:py-28 px-6">
+    <section id="compare-plans" className="scroll-mt-24 px-6 py-20 md:py-28">
       <motion.div
         initial={reduceMotion ? {} : { opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}

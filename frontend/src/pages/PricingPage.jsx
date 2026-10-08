@@ -130,7 +130,7 @@ export default function PricingPage() {
       <main>
         <PricingHero />
 
-        <section className="px-6 pb-20 md:pb-28" id="plans">
+        <section className="px-5 pb-20 sm:px-6 md:pb-24" id="plans">
           <PricingCards />
           <div className="text-center mt-10">
             <p className="text-[#1a1a1a]/50 text-[15px] font-medium mb-1">Need a larger plan?</p>
