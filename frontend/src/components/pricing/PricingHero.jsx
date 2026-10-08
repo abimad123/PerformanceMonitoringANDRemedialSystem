@@ -26,7 +26,7 @@ export default function PricingHero() {
           className="font-medium tracking-tight leading-[1.05]"
           style={{ fontFamily: "'Instrument Serif', serif", fontSize: "clamp(38px, 5.6vw, 66px)", color: NAVY }}
         >
-          Plans designed for growing schools
+          School management plans for growing schools
         </h1>
         <p className="max-w-2xl text-[16px] font-medium leading-relaxed text-[#1a1a1a]/60 md:text-[18px]">
           Choose the right tools for your school today, with room to grow tomorrow.
