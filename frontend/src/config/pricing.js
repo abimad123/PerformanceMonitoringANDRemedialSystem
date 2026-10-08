@@ -211,13 +211,13 @@ export const PRICING_NOTES = [
 ];
 
 export const FAQ = [
-  { question: "Is PMRS billed monthly or annually?", answer: "PMRS plans are currently offered as annual SaaS subscriptions." },
-  { question: "How many students can I add?", answer: "Each plan includes a defined active-student limit. Schools can upgrade as their student population grows." },
-  { question: "Can we upgrade later?", answer: "Yes. Institutions can move to a higher plan when their requirements increase." },
-  { question: "Is hosting included?", answer: "The PMRS SaaS subscription includes the platform infrastructure required to operate the service." },
-  { question: "Do you provide onboarding?", answer: "Professional and Enterprise customers can receive onboarding assistance based on the implementation requirements." },
-  { question: "Can PMRS be customized?", answer: "Enterprise institutions can discuss custom reports, integrations and institution-specific requirements." },
-  { question: "Is AI currently available?", answer: "AI-powered personalized learning and RAG-based institutional assistance are planned capabilities and will be introduced separately. Features marked Coming Soon are not currently part of the production platform." },
+  { category: "billing", question: "Is PMRS billed monthly or annually?", answer: "PMRS plans are currently offered as annual SaaS subscriptions." },
+  { category: "billing", question: "How many students can I add?", answer: "Each plan includes a defined active-student limit. Schools can upgrade as their student population grows." },
+  { category: "billing", question: "Can we upgrade later?", answer: "Yes. Institutions can move to a higher plan when their requirements increase." },
+  { category: "platform", question: "Is hosting included?", answer: "The PMRS SaaS subscription includes the platform infrastructure required to operate the service." },
+  { category: "onboarding", question: "Do you provide onboarding?", answer: "Professional and Enterprise customers can receive onboarding assistance based on the implementation requirements." },
+  { category: "onboarding", question: "Can PMRS be customized?", answer: "Enterprise institutions can discuss custom reports, integrations and institution-specific requirements." },
+  { category: "platform", question: "Is AI currently available?", answer: "AI-powered personalized learning and RAG-based institutional assistance are planned capabilities and will be introduced separately. Features marked Coming Soon are not currently part of the production platform." },
 ];
 
 export const CONTACT_EMAIL = "pmrsteam.official@gmail.com";
