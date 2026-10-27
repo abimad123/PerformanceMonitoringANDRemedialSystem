@@ -13,6 +13,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import dashboardService from '@/services/dashboardService';
 import ContentSkeleton from '@/components/ui/ContentSkeleton';
+import { Link } from 'react-router-dom';
+import { useAuthContext } from '@/context/AuthContext';
 
 import DashboardHeader from './components/DashboardHeader';
 import InviteCard from './components/InviteCard';
@@ -25,6 +27,7 @@ import QuickActions from './components/QuickActions';
 import AddTeacherModal from './components/AddTeacherModal';
 
 export default function AdminDashboardPage() {
+  const { user: signedInUser } = useAuthContext();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -233,6 +236,14 @@ export default function AdminDashboardPage() {
         adminName={user.name}
         onOpenAddTeacher={() => setIsAddTeacherOpen(true)}
       />
+
+      {signedInUser?.subscription?.plan_name && <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-amber-200 bg-white px-5 py-4 shadow-sm">
+        <div>
+          <p className="text-sm font-bold text-[#152238]">{signedInUser.subscription.plan_name} plan <span className="ml-2 rounded-full bg-amber-100 px-2 py-1 text-xs capitalize text-amber-900">{signedInUser.subscription.status}</span></p>
+          <p className="mt-1 text-sm text-slate-600">{signedInUser.subscription.student_usage}{signedInUser.subscription.student_limit ? ` / ${signedInUser.subscription.student_limit}` : ''} active students</p>
+        </div>
+        <Link to="/billing" className="rounded-xl bg-[#152238] px-4 py-2 text-sm font-semibold text-white">View plan</Link>
+      </div>}
 
       {/* 2. Student Invite Card */}
       <InviteCard school={school} />

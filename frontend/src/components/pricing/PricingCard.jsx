@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, CheckCircle2, ChevronDown, Users } from "lucide-react";
-import { CONTACT_EMAIL } from "@/config/pricing";
 
 const NAVY = "#152238";
 const MARIGOLD = "#F2A93B";
@@ -13,11 +12,7 @@ export default function PricingCard({ plan, compact = false }) {
   const visibleFeatures = compact ? plan.features.slice(0, 5) : plan.features;
 
   const handleCta = () => {
-    if (plan.ctaType === "outline") {
-      window.location.href = `mailto:${CONTACT_EMAIL}`;
-    } else {
-      window.location.href = `${BASE_URL}/register`;
-    }
+    window.location.href = `${BASE_URL}/register?plan=${encodeURIComponent(plan.id)}`;
   };
 
   const ctaStyles = {
@@ -82,6 +77,7 @@ export default function PricingCard({ plan, compact = false }) {
       </div>
       <p className="mb-4 text-[12px] font-medium text-[#1a1a1a]/45">
         Equivalent to {plan.monthlyEquivalent}/month billed annually
+        {plan.setupFee > 0 && <span className="block mt-1">One-time setup fee: ₹{plan.setupFee.toLocaleString('en-IN')}</span>}
       </p>
 
       <div className="mb-4 flex items-center gap-2 rounded-xl bg-[#152238]/[0.045] px-3.5 py-2">
